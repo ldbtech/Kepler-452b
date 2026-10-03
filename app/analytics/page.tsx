@@ -33,7 +33,7 @@ export default async function AnalyticsPage() {
           <Stat label="Est. combined market value" value={formatUsd(totalEstValue)} />
         </div>
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[.02] p-4">
+        <div className="mt-6 rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
           <div className="mb-3 text-sm font-medium text-neutral-200">Match score by vehicle</div>
           <div className="flex flex-col gap-2">
             {ranked.map(({ vehicle, score }) => (
@@ -59,7 +59,7 @@ export default async function AnalyticsPage() {
 
 function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[.02] p-4">
+    <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
       <div className="text-xs text-neutral-500">{label}</div>
       <div className="mt-1 text-xl font-semibold text-neutral-100">{value}</div>
       {hint && <div className="mt-0.5 text-[11px] text-neutral-600">{hint}</div>}

@@ -26,7 +26,7 @@ export default function LoginForm({
           <div
             key={dealer.id}
             className={`rounded-2xl border p-4 transition-colors ${
-              isSelected ? "border-blue-500 bg-blue-600/10" : "border-white/10 bg-white/[.02]"
+              isSelected ? "border-blue-500 bg-blue-600/10" : "border-white/[.08] bg-white/[.02]"
             }`}
           >
             <div
@@ -49,7 +49,7 @@ export default function LoginForm({
                   type="password"
                   name="password"
                   defaultValue={dealer.password}
-                  className="w-full rounded-lg border border-white/10 bg-white/[.04] px-3 py-1.5 text-sm text-neutral-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-white/[.08] bg-white/[.04] px-3 py-1.5 text-sm text-neutral-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="Password"
                 />
                 {hadError && (

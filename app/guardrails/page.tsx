@@ -109,7 +109,7 @@ export default async function GuardrailsPage() {
 
 function Card({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[.02] p-4">
+    <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
       <div className="mb-3 text-sm text-neutral-500">{label}</div>
       {children}
     </div>

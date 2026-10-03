@@ -5,6 +5,7 @@ import { getVehicles } from "@/lib/vehicles";
 import { getCurrentDealer } from "@/lib/session";
 import { getDealerAiRecommendation, rankVehiclesForDealer } from "@/lib/recommend";
 import { formatUsd } from "@/lib/demo";
+import { IconHeart } from "@/components/icons";
 
 export default async function WatchlistPage() {
   const dealer = await getCurrentDealer();
@@ -29,7 +30,7 @@ export default async function WatchlistPage() {
               <Link
                 key={v.lotNumber}
                 href={`/auctions/${v.lotNumber}`}
-                className="overflow-hidden rounded-xl border border-white/10 bg-white/[.02] transition-colors hover:border-white/20"
+                className="overflow-hidden rounded-xl border border-white/[.08] bg-white/[.02] transition-colors hover:border-white/20"
               >
                 <div className="relative aspect-[4/3] bg-neutral-900">
                   {cover && (
@@ -41,7 +42,9 @@ export default async function WatchlistPage() {
                       sizes="300px"
                     />
                   )}
-                  <span className="absolute right-2 top-2 text-lg">♥</span>
+                  <span className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-red-400 backdrop-blur">
+                    <IconHeart className="h-3.5 w-3.5" fill="currentColor" strokeWidth={0} />
+                  </span>
                 </div>
                 <div className="p-3">
                   <h2 className="truncate text-sm font-medium text-neutral-100">

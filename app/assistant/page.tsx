@@ -5,6 +5,7 @@ import { getVehicles } from "@/lib/vehicles";
 import { getCurrentDealer } from "@/lib/session";
 import { getDealerAiRecommendation, rankVehiclesForDealer } from "@/lib/recommend";
 import { formatUsd } from "@/lib/demo";
+import { IconAlertTriangle, IconChart, IconDollar, IconSearch } from "@/components/icons";
 
 export default async function AssistantPage() {
   const dealer = await getCurrentDealer();
@@ -21,7 +22,7 @@ export default async function AssistantPage() {
           Get clear, actionable insights about any vehicle or auction.
         </p>
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[.02] p-4">
+        <div className="mt-6 rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
           <div className="mb-3 flex items-center gap-3">
             <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-900">
               {cover && (
@@ -36,26 +37,26 @@ export default async function AssistantPage() {
                 {v.year} {v.make} {v.model}
               </Link>
               <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-                <span className="flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                <span className="flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
                   LIVE
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-lg bg-blue-600/10 p-3 text-sm leading-relaxed text-blue-200">
-            <div className="mb-1 font-medium text-blue-300">Why this bid?</div>
+          <div className="rounded-lg bg-white/[.03] p-3 text-sm leading-relaxed text-neutral-300">
+            <div className="mb-1 font-medium text-neutral-200">Why this bid?</div>
             {rec.reasoning}
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
             <InsightCard
-              icon="📊"
+              icon={IconSearch}
               title="Market Analysis"
               body={`${rec.comparableCount} similar vehicles analyzed`}
             />
             <InsightCard
-              icon="🔍"
+              icon={IconChart}
               title="Condition Assessment"
               body={
                 rec.riskLevel === "Low"
@@ -64,12 +65,12 @@ export default async function AssistantPage() {
               }
             />
             <InsightCard
-              icon="💰"
+              icon={IconDollar}
               title="Profit Potential"
               body={`${formatUsd(rec.expectedMargin)} (${rec.expectedMarginPct}%) after estimated repairs`}
             />
             <InsightCard
-              icon="⚠️"
+              icon={IconAlertTriangle}
               title="Risk Evaluation"
               body={`${rec.riskLevel} risk, ${rec.confidence}% confidence`}
             />
@@ -77,18 +78,26 @@ export default async function AssistantPage() {
         </div>
 
         <p className="mt-4 text-xs text-neutral-600">
-          Showing the top-recommended vehicle for {dealer.name}. Ask-anything chat isn&apos;t
-          wired up in this prototype yet.
+          Showing the top-recommended vehicle for {dealer.name}. For an ask-anything chat, use
+          the assistant bubble in the bottom corner on any page.
         </p>
       </div>
     </AppShell>
   );
 }
 
-function InsightCard({ icon, title, body }: { icon: string; title: string; body: string }) {
+function InsightCard({
+  icon: Icon,
+  title,
+  body,
+}: {
+  icon: typeof IconChart;
+  title: string;
+  body: string;
+}) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[.02] p-2.5">
-      <div className="mb-1">{icon}</div>
+    <div className="rounded-lg border border-white/[.08] bg-white/[.02] p-2.5">
+      <Icon className="mb-1.5 h-4 w-4 text-neutral-500" strokeWidth={1.5} />
       <div className="font-medium text-neutral-200">{title}</div>
       <div className="mt-0.5 text-neutral-500">{body}</div>
     </div>
