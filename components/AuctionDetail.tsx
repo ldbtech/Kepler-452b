@@ -4,15 +4,16 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import type { Vehicle } from "@/lib/vehicles";
+import type { Dealer } from "@/lib/dealers";
 import { imagesByCategory, type ImageCategory } from "@/lib/imageCategories";
 import {
   formatAgo,
   formatCountdown,
   formatUsd,
   getAgentSteps,
-  getAiRecommendation,
   getAuctionState,
 } from "@/lib/demo";
+import { getDealerAiRecommendation } from "@/lib/recommend";
 
 const Vehicle3DPhoto = dynamic(() => import("@/components/Vehicle3DPhoto"), {
   ssr: false,
@@ -37,18 +38,24 @@ const RISK_STYLE: Record<string, string> = {
   High: "text-red-400",
 };
 
-export default function AuctionDetail({ vehicle }: { vehicle: Vehicle }) {
+export default function AuctionDetail({
+  vehicle,
+  dealer,
+}: {
+  vehicle: Vehicle;
+  dealer: Dealer;
+}) {
   const [category, setCategory] = useState<ImageCategory>("Exterior");
   const [autoBid, setAutoBid] = useState(true);
   const buckets = imagesByCategory(vehicle);
-  const rec = getAiRecommendation(vehicle);
-  const auction = getAuctionState(vehicle);
+  const rec = getDealerAiRecommendation(vehicle, dealer);
+  const auction = getAuctionState(vehicle, rec.recommendedMaxBid);
   const steps = getAgentSteps();
 
   const flatImages = buckets[category];
 
   return (
-    <div className="px-6 py-6">
+    <div className="px-4 py-5 sm:px-6 sm:py-6">
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_320px]">
         {/* Main viewer card */}
         <div className="rounded-2xl border border-white/10 bg-white/[.02] p-4">
@@ -93,9 +100,9 @@ export default function AuctionDetail({ vehicle }: { vehicle: Vehicle }) {
             👥 {auction.bidderCount} bidders online
           </div>
 
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             {/* category tabs */}
-            <div className="flex flex-col gap-1.5">
+            <div className="flex gap-1.5 overflow-x-auto pb-1 sm:flex-col sm:overflow-visible sm:pb-0">
               {CATEGORIES.map((c) => {
                 const count = buckets[c.key].length;
                 const disabled = count === 0;
@@ -104,7 +111,7 @@ export default function AuctionDetail({ vehicle }: { vehicle: Vehicle }) {
                     key={c.key}
                     disabled={disabled}
                     onClick={() => setCategory(c.key)}
-                    className={`flex w-24 flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-[11px] transition-colors ${
+                    className={`flex w-20 shrink-0 flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-[11px] transition-colors sm:w-24 ${
                       category === c.key
                         ? "border-blue-500 bg-blue-600/15 text-blue-400"
                         : disabled
@@ -244,10 +251,10 @@ export default function AuctionDetail({ vehicle }: { vehicle: Vehicle }) {
               Your Guardrails <span className="text-emerald-400">(Active)</span>
             </span>
           </div>
-          <Row label="Max bid per vehicle" value="$18,500" />
-          <Row label="Total budget cap" value="$100,000" />
-          <Row label="Risk tolerance" value="Low – Moderate" />
-          <Row label="Intervene" value="Only if flagged" />
+          <Row label="Max bid per vehicle" value={formatUsd(dealer.maxBidPerVehicle)} />
+          <Row label="Total budget cap" value={formatUsd(dealer.totalBudgetCap)} />
+          <Row label="Risk tolerance" value={dealer.riskTolerance} />
+          <Row label="Intervene" value={dealer.interventionPreference} />
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/[.02] p-4">

@@ -147,18 +147,22 @@ export function getAgentSteps(): AgentStep[] {
   ];
 }
 
-export function getAuctionState(vehicle: Vehicle): AuctionState {
+export function getAuctionState(
+  vehicle: Vehicle,
+  recommendedMaxBidOverride?: number,
+): AuctionState {
   const rng = rngFor(vehicle);
-  const rec = getAiRecommendation(vehicle);
+  const recommendedMaxBid =
+    recommendedMaxBidOverride ?? getAiRecommendation(vehicle).recommendedMaxBid;
   const bidderCount = 6 + Math.floor(rng() * 24);
   const lane = 1 + Math.floor(rng() * 8);
   const auctionId = `AUC-${90000 + Math.floor(rng() * 9999)}`;
   const secondsRemaining = 20 + Math.floor(rng() * 400);
 
   const steps = 3 + Math.floor(rng() * 5);
-  const increment = Math.max(50, Math.round((rec.recommendedMaxBid * 0.04) / 10) * 10);
-  let bid = Math.round(rec.recommendedMaxBid * 0.35);
-  const bidCeiling = Math.round(rec.recommendedMaxBid * 0.92);
+  const increment = Math.max(50, Math.round((recommendedMaxBid * 0.04) / 10) * 10);
+  let bid = Math.round(recommendedMaxBid * 0.35);
+  const bidCeiling = Math.round(recommendedMaxBid * 0.92);
   const activity: BidActivity[] = [];
   let elapsed = 0;
   for (let i = 0; i < steps; i++) {
