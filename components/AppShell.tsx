@@ -114,14 +114,7 @@ export default function AppShell({
             <IconMenu className="h-5 w-5" />
           </button>
 
-          <div className="hidden flex-1 sm:block">
-            <input
-              placeholder="Search vehicles, make, model, or auction ID…"
-              className="w-full max-w-md rounded-lg border border-white/[.06] bg-white/[.03] px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-white/20 focus:outline-none"
-              disabled
-            />
-          </div>
-          <div className="flex-1 sm:hidden" />
+          <div className="flex-1" />
 
           <button className="relative text-neutral-500 hover:text-neutral-200">
             <IconBell className="h-5 w-5" />
