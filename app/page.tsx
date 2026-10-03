@@ -1,69 +1,108 @@
 import Image from "next/image";
+import Link from "next/link";
+import AppShell from "@/components/AppShell";
+import { getVehicles } from "@/lib/vehicles";
+import { formatCountdown, formatUsd, getAuctionState } from "@/lib/demo";
 
 export default function Home() {
+  const vehicles = getVehicles();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
+    <AppShell>
+      <div className="px-6 py-6">
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-semibold text-neutral-100">Live Auctions</h1>
+            <p className="text-sm text-neutral-500">
+              AI is monitoring {vehicles.length} vehicles for you
+            </p>
+          </div>
+        </div>
+
+        {vehicles.length === 0 ? (
+          <p className="text-zinc-500">
+            No vehicles loaded — run{" "}
+            <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs">
+              npm run fetch:copart
             </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+            then{" "}
+            <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs">
+              npm run gen:depth
+            </code>
+            .
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {vehicles.map((v) => {
+              const cover =
+                v.images.find((img) => img.label === v.rotationOrder[0]) ?? v.images[0];
+              const auction = getAuctionState(v);
+              return (
+                <Link
+                  key={v.lotNumber}
+                  href={`/auctions/${v.lotNumber}`}
+                  className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[.02] p-3 transition-colors hover:border-white/20 hover:bg-white/[.04]"
+                >
+                  <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-neutral-900">
+                    {cover && (
+                      <Image
+                        src={cover.file}
+                        alt={`${v.year} ${v.make} ${v.model}`}
+                        fill
+                        className="object-cover"
+                        sizes="112px"
+                      />
+                    )}
+                    <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold">
+                      <span className="h-1 w-1 rounded-full bg-white" />
+                      LIVE
+                    </span>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                      <span>Lane {auction.lane}</span>
+                      <span>·</span>
+                      <span>#{auction.auctionId}</span>
+                    </div>
+                    <h2 className="truncate font-medium text-neutral-100">
+                      {v.year} {v.make} {v.model} {v.trim ?? ""}
+                    </h2>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-neutral-500">
+                      <span>{v.odometer ? `${v.odometer.toLocaleString()} mi` : "— mi"}</span>
+                      <span>{v.condition ?? "—"}</span>
+                      <span>{v.location ?? "—"}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-xs text-red-400">
+                    <span>⏱</span>
+                    {formatCountdown(auction.secondsRemaining)}
+                  </div>
+
+                  <div className="flex items-center gap-1 text-xs text-neutral-500">
+                    <span>👤</span>
+                    {auction.bidderCount} bidders
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-[10px] uppercase tracking-wide text-neutral-500">
+                      Current bid
+                    </div>
+                    <div className="font-semibold text-emerald-400">
+                      {formatUsd(auction.currentBid)}
+                    </div>
+                  </div>
+
+                  <span className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white">
+                    Join Auction
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </AppShell>
   );
 }

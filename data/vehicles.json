@@ -1,0 +1,632 @@
+[
+  {
+    "lotNumber": 67988586,
+    "year": 2017,
+    "make": "FORD",
+    "model": "F150",
+    "trim": "SUPERCREW",
+    "color": "WHITE",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 210289,
+    "location": "BRIDGETON, MO",
+    "bodyStyle": "CREW PICKUP",
+    "vehicleCategory": "PICKUP",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988586/DSFA.jpg",
+        "depthFile": "/vehicles/67988586/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988586/PSFA.jpg",
+        "depthFile": "/vehicles/67988586/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988586/PSRA.jpg",
+        "depthFile": "/vehicles/67988586/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988586/DSRA.jpg",
+        "depthFile": "/vehicles/67988586/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988586/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988586/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988586/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988586/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988586/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:38:56.263Z"
+  },
+  {
+    "lotNumber": 67988616,
+    "year": 2019,
+    "make": "NISSAN",
+    "model": "NV200",
+    "trim": "SV",
+    "color": "WHITE",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 117228,
+    "location": "MARLBORO, NY",
+    "bodyStyle": "MINI-VAN",
+    "vehicleCategory": "MEDIUM DUTY/BOX TRUCKS",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988616/DSFA.jpg",
+        "depthFile": "/vehicles/67988616/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988616/PSFA.jpg",
+        "depthFile": "/vehicles/67988616/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988616/PSRA.jpg",
+        "depthFile": "/vehicles/67988616/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988616/DSRA.jpg",
+        "depthFile": "/vehicles/67988616/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988616/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988616/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988616/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988616/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988616/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:00.013Z"
+  },
+  {
+    "lotNumber": 67988626,
+    "year": 2014,
+    "make": "NISSAN",
+    "model": "FRONTIER",
+    "trim": "SV V6",
+    "color": "CHARCOAL",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 123998,
+    "location": "GREENWOOD, NE",
+    "bodyStyle": "PICKUP",
+    "vehicleCategory": "PICKUP",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988626/DSFA.jpg",
+        "depthFile": "/vehicles/67988626/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988626/PSFA.jpg",
+        "depthFile": "/vehicles/67988626/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988626/PSRA.jpg",
+        "depthFile": "/vehicles/67988626/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988626/DSRA.jpg",
+        "depthFile": "/vehicles/67988626/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988626/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988626/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988626/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988626/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988626/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:05.067Z"
+  },
+  {
+    "lotNumber": 67988666,
+    "year": 2016,
+    "make": "KIA",
+    "model": "SOUL",
+    "trim": "+",
+    "color": "WHITE",
+    "condition": "RUNS AND DRIVES",
+    "damage": "SIDE",
+    "odometer": 131523,
+    "location": "GLASSBORO, NJ",
+    "bodyStyle": "4DR SPORT UTILITY",
+    "vehicleCategory": "SUV",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988666/DSFA.jpg",
+        "depthFile": "/vehicles/67988666/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988666/PSFA.jpg",
+        "depthFile": "/vehicles/67988666/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988666/PSRA.jpg",
+        "depthFile": "/vehicles/67988666/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988666/DSRA.jpg",
+        "depthFile": "/vehicles/67988666/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988666/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988666/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988666/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988666/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988666/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:12.679Z"
+  },
+  {
+    "lotNumber": 67988686,
+    "year": 2011,
+    "make": "NISSAN",
+    "model": "ROGUE",
+    "trim": "S",
+    "color": "SILVER",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 290466,
+    "location": "FLORENCE, MS",
+    "bodyStyle": "WAGON",
+    "vehicleCategory": "SUV",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988686/DSFA.jpg",
+        "depthFile": "/vehicles/67988686/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988686/PSFA.jpg",
+        "depthFile": "/vehicles/67988686/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988686/PSRA.jpg",
+        "depthFile": "/vehicles/67988686/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988686/DSRA.jpg",
+        "depthFile": "/vehicles/67988686/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988686/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988686/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988686/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988686/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988686/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:20.291Z"
+  },
+  {
+    "lotNumber": 67988706,
+    "year": 2019,
+    "make": "RAM",
+    "model": "1500",
+    "trim": "BIG HORN/LONE STAR",
+    "color": "BLUE",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 62451,
+    "location": "ORLANDO, FL",
+    "bodyStyle": "PICKUP",
+    "vehicleCategory": "AUTOMOBILE",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988706/DSFA.jpg",
+        "depthFile": "/vehicles/67988706/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988706/PSFA.jpg",
+        "depthFile": "/vehicles/67988706/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988706/PSRA.jpg",
+        "depthFile": "/vehicles/67988706/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988706/DSRA.jpg",
+        "depthFile": "/vehicles/67988706/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988706/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988706/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988706/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988706/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988706/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:27.083Z"
+  },
+  {
+    "lotNumber": 67988726,
+    "year": 2009,
+    "make": "HONDA",
+    "model": "CIVIC",
+    "trim": "LX",
+    "color": "MAROON",
+    "condition": "RUNS AND DRIVES",
+    "damage": "SIDE",
+    "odometer": 76707,
+    "location": "ELGIN, IL",
+    "bodyStyle": "SEDAN 4DR",
+    "vehicleCategory": "SEDAN",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988726/DSFA.jpg",
+        "depthFile": "/vehicles/67988726/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988726/PSFA.jpg",
+        "depthFile": "/vehicles/67988726/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988726/PSRA.jpg",
+        "depthFile": "/vehicles/67988726/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988726/DSRA.jpg",
+        "depthFile": "/vehicles/67988726/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988726/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988726/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988726/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988726/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988726/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:31.493Z"
+  },
+  {
+    "lotNumber": 67988746,
+    "year": 2022,
+    "make": "ISUZU",
+    "model": "NRR",
+    "trim": null,
+    "color": "BLUE",
+    "condition": "ENHANCED VEHICLES",
+    "damage": "MECHANICAL",
+    "odometer": 195150,
+    "location": "SAN ANTONIO, TX",
+    "bodyStyle": "STRAIGHT TRUCK",
+    "vehicleCategory": "MEDIUM DUTY/BOX TRUCKS",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988746/DSFA.jpg",
+        "depthFile": "/vehicles/67988746/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988746/PSFA.jpg",
+        "depthFile": "/vehicles/67988746/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988746/PSRA.jpg",
+        "depthFile": "/vehicles/67988746/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988746/DSRA.jpg",
+        "depthFile": "/vehicles/67988746/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988746/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988746/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988746/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988746/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988746/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:39.275Z"
+  },
+  {
+    "lotNumber": 67988756,
+    "year": 2017,
+    "make": "KIA",
+    "model": "SPORTAGE",
+    "trim": "LX",
+    "color": "BROWN",
+    "condition": "RUNS AND DRIVES",
+    "damage": "FRONT END",
+    "odometer": 157243,
+    "location": "LONGVIEW, TX",
+    "bodyStyle": "4DR SPORT UTILITY",
+    "vehicleCategory": "SUV",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988756/DSFA.jpg",
+        "depthFile": "/vehicles/67988756/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988756/PSFA.jpg",
+        "depthFile": "/vehicles/67988756/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988756/PSRA.jpg",
+        "depthFile": "/vehicles/67988756/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988756/DSRA.jpg",
+        "depthFile": "/vehicles/67988756/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988756/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988756/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988756/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988756/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988756/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:43.514Z"
+  },
+  {
+    "lotNumber": 67988766,
+    "year": 2013,
+    "make": "FORD",
+    "model": "F150",
+    "trim": "SUPERCREW",
+    "color": "BLACK",
+    "condition": "RUNS AND DRIVES",
+    "damage": "MINOR DENT/SCRATCHES",
+    "odometer": 166947,
+    "location": "SAVANNAH, GA",
+    "bodyStyle": "CREW PICKUP",
+    "vehicleCategory": "PICKUP",
+    "images": [
+      {
+        "label": "DSFA",
+        "file": "/vehicles/67988766/DSFA.jpg",
+        "depthFile": "/vehicles/67988766/DSFA_depth.png"
+      },
+      {
+        "label": "PSFA",
+        "file": "/vehicles/67988766/PSFA.jpg",
+        "depthFile": "/vehicles/67988766/PSFA_depth.png"
+      },
+      {
+        "label": "PSRA",
+        "file": "/vehicles/67988766/PSRA.jpg",
+        "depthFile": "/vehicles/67988766/PSRA_depth.png"
+      },
+      {
+        "label": "DSRA",
+        "file": "/vehicles/67988766/DSRA.jpg",
+        "depthFile": "/vehicles/67988766/DSRA_depth.png"
+      },
+      {
+        "label": "DIRF",
+        "file": "/vehicles/67988766/DIRF.jpg"
+      },
+      {
+        "label": "ENGN",
+        "file": "/vehicles/67988766/ENGN.jpg"
+      },
+      {
+        "label": "ODOM",
+        "file": "/vehicles/67988766/ODOM.jpg"
+      },
+      {
+        "label": "DENT",
+        "file": "/vehicles/67988766/DENT.jpg"
+      },
+      {
+        "label": "CKPT",
+        "file": "/vehicles/67988766/CKPT.jpg"
+      }
+    ],
+    "rotationOrder": [
+      "DSFA",
+      "PSFA",
+      "PSRA",
+      "DSRA"
+    ],
+    "fetchedAt": "2026-10-03T17:39:51.200Z"
+  }
+]
