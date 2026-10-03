@@ -2,14 +2,14 @@
 
 import { Suspense } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { OrbitControls, Center } from "@react-three/drei";
+import { OrbitControls, Center, Bounds } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 function Model({ url }: { url: string }) {
   const gltf = useLoader(GLTFLoader, url);
   return (
     <Center>
-      <primitive object={gltf.scene} scale={2.2} />
+      <primitive object={gltf.scene} scale={1} />
     </Center>
   );
 }
@@ -24,7 +24,9 @@ export default function MeshViewer({ url }: { url: string }) {
         <ambientLight intensity={1.1} />
         <directionalLight position={[3, 4, 5]} intensity={0.6} />
         <Suspense fallback={null}>
-          <Model url={url} />
+          <Bounds fit clip observe margin={1.3}>
+            <Model url={url} />
+          </Bounds>
         </Suspense>
         <OrbitControls enablePan={false} minDistance={1.2} maxDistance={6} />
       </Canvas>

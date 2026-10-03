@@ -29,25 +29,20 @@ npm run fetch:copart -- 10   # pull a fresh random batch of 10 real Copart lots 
 npm run gen:depth            # generate depth maps for the 3D viewer
 ```
 
-## AI 3D reconstruction (experimental, Colab-powered)
+## AI 3D reconstruction (Colab-powered)
 
-The auction detail page has an **"AI 3D (Beta)"** tab that turns up to six vehicle exterior photos into a
-rough 3D mesh using [Shap-E](https://github.com/openai/shap-e), an actual diffusion model — not
-a trick. It needs a GPU, which this app does not have access to on its own, so it calls out to
-a notebook you run in [Google Colab](https://colab.research.google.com) (free tier GPU):
+The auction's **AI 3D (Beta)** tab uses [Tencent Hunyuan3D-2mv](https://huggingface.co/tencent/Hunyuan3D-2mv) from Hugging Face. It sends up to four separate exterior rotation photos to the Colab API. The notebook removes each background, then passes a dictionary of images to the multi-view geometry model. There is no contact sheet and no Shap-E fallback.
 
-1. Open [`colab/keplerv_diffusion_3d.ipynb`](colab/keplerv_diffusion_3d.ipynb) in Colab
-   (Colab → File → Upload notebook, or open it from this GitHub repo directly).
-2. `Runtime` → `Change runtime type` → **T4 GPU**.
-3. Get a free ngrok authtoken at https://dashboard.ngrok.com/get-started/your-authtoken.
-4. `Runtime` → `Run all`. First run downloads model weights (a few GB, several minutes).
-5. Copy the public URL the last cell prints, paste it into the "AI 3D (Beta)" tab on the
-   website when prompted. The app sends up to six exterior views together as a reference board. Shap-E accepts one image condition, so this improves context but is not true multi-camera photogrammetry.
+1. Open [the notebook in Colab](https://colab.research.google.com/github/ldbtech/Kepler-452b/blob/main/colab/keplerv_diffusion_3d.ipynb).
+2. Select **T4 GPU** and **Run all**. Installation and first model download take several minutes.
+3. Enter your [ngrok authtoken](https://dashboard.ngrok.com/get-started/your-authtoken) when prompted.
+4. Paste the printed **Public API URL** into the website's AI 3D tab.
 
-This only works while that Colab notebook stays open and running — free GPU sessions
-disconnect after a period of idle time or ~12h max. It's a demo feature, not part of the
-deployed site's always-on functionality. The ngrok URL is stored only in your browser
-(`localStorage`), never deployed or committed.
+**Upgrading an existing session:** stop the old server cell, reopen the updated notebook, and rerun setup/model/reconstruction/server cells. Reuse the existing ngrok token or enter it again. The website checks `/health` and refuses to use the old Shap-E service.
+
+The four camera slots represent the reference image and views approximately 90°, 180°, and 270° clockwise around the same vehicle. Auction corner images provide approximate angles; unrelated close-ups/interior photos are excluded. Foreground cutouts are saved to `/content/keplerv-inputs` for inspection. Input masks and camera consistency affect quality. This configuration generates normalized, **untextured** GLB geometry on a T4, with orbit, zoom, regeneration, and download in the website. It infers hidden details and cannot guarantee exact proportions, damage, or measurements.
+
+Keep the Colab runtime running; a GitHub/Vercel deployment does not host the GPU model. The ngrok URL is stored in the user's browser. Review Tencent's model license for your intended use before a production commercial rollout.
 
 ## Deploying
 

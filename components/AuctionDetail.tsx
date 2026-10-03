@@ -166,8 +166,10 @@ export default function AuctionDetail({
               <Vehicle3DPhoto vehicle={vehicle} />
             ) : tab === "AI 3D (Beta)" ? (
               <AiReconstructPanel
-                imageUrls={(buckets.Exterior.length ? buckets.Exterior : vehicle.images)
-                  .slice(0, 6)
+                imageUrls={vehicle.rotationOrder
+                  .map((label) => vehicle.images.find((image) => image.label === label))
+                  .filter((image) => image !== undefined)
+                  .slice(0, 4)
                   .map((image) => `https://www.keplerv.com${image.file}`)}
               />
             ) : tab === "Photos" ? (

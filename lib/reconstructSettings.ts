@@ -8,7 +8,8 @@ const KEY = "keplerv_reconstruct_url";
 export function getReconstructUrl(): string {
   if (typeof window === "undefined") return "";
   try {
-    return window.localStorage.getItem(KEY) ?? "";
+    const saved = window.localStorage.getItem(KEY);
+    return saved ? new URL(saved).origin : "";
   } catch {
     return "";
   }
