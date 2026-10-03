@@ -52,6 +52,26 @@ export type AiRecommendation = {
   confidence: number;
   reasoning: string;
   comparableCount: number;
+  conditionScore: number;
+  repairCostLow: number;
+  repairCostHigh: number;
+  wholesaleValueLow: number;
+  wholesaleValueHigh: number;
+  winProbability: number;
+};
+
+export type BiddingAgent = {
+  key: string;
+  label: string;
+  strategyLabel: string;
+  description: string;
+  maxBid: number;
+  aggressiveness: number;
+};
+
+export type MarketInsights = {
+  points: { label: string; thisVehicle: number; similar: number }[];
+  trendPct: number;
 };
 
 export type BidActivity = { bidder: string; amount: number; secondsAgo: number; isAi: boolean };
@@ -126,6 +146,20 @@ export function getAiRecommendation(vehicle: Vehicle): AiRecommendation {
         ? `Repair scope looks contained for a "${vehicle.damage ?? "reported"}" loss, and similar vehicles are trading near this range across ${comparableCount} comparables.`
         : `Minimal reported damage and consistent odometer history against ${comparableCount} comparables support a more confident bid.`;
 
+  const conditionScore = Math.round(
+    Math.max(
+      20,
+      Math.min(95, (riskLevel === "Low" ? 85 : riskLevel === "Moderate" ? 65 : 40) + rng() * 10 - 5),
+    ),
+  );
+  const repairCostLow = Math.round((repairCost * 0.7) / 50) * 50;
+  const repairCostHigh = Math.round((repairCost * 1.35) / 50) * 50;
+  const wholesaleValueLow = Math.round((marketValue * 0.92) / 50) * 50;
+  const wholesaleValueHigh = Math.round((marketValue * 1.1) / 50) * 50;
+  const winProbability = Math.round(
+    Math.max(10, Math.min(85, 55 - (riskLevel === "High" ? 20 : riskLevel === "Moderate" ? 5 : -10) + rng() * 15)),
+  );
+
   return {
     estimatedMarketValue: marketValue,
     recommendedMaxBid: Math.round(recommendedMaxBid / 50) * 50,
@@ -135,7 +169,71 @@ export function getAiRecommendation(vehicle: Vehicle): AiRecommendation {
     confidence: Math.min(97, confidence),
     reasoning,
     comparableCount,
+    conditionScore,
+    repairCostLow,
+    repairCostHigh,
+    wholesaleValueLow,
+    wholesaleValueHigh,
+    winProbability,
   };
+}
+
+const AGENT_DEFS = [
+  {
+    key: "A",
+    label: "Dealer A (AI)",
+    strategyLabel: "Strategic Agent",
+    description: "Analyzes competing bidders and optimizes bid timing.",
+  },
+  {
+    key: "B",
+    label: "Dealer B (AI)",
+    strategyLabel: "Conservative Agent",
+    description: "Low risk tolerance, bids only when margins are clear.",
+  },
+  {
+    key: "C",
+    label: "Dealer C (AI)",
+    strategyLabel: "Specialist Agent",
+    description: "Focuses on this make/model with strong repair capability.",
+  },
+  {
+    key: "D",
+    label: "Dealer D (AI)",
+    strategyLabel: "Demand-Driven Agent",
+    description: "Bids based on regional inventory demand signals.",
+  },
+];
+
+export function getBiddingAgents(vehicle: Vehicle): BiddingAgent[] {
+  const rng = rngFor(vehicle);
+  const rec = getAiRecommendation(vehicle);
+  return AGENT_DEFS.map((def) => {
+    const spread = 0.75 + rng() * 0.6;
+    return {
+      ...def,
+      maxBid: Math.round((rec.recommendedMaxBid * spread) / 50) * 50,
+      aggressiveness: Math.round(25 + rng() * 65),
+    };
+  });
+}
+
+export function getMarketInsights(vehicle: Vehicle): MarketInsights {
+  const rng = rngFor(vehicle);
+  const rec = getAiRecommendation(vehicle);
+  const base = rec.estimatedMarketValue;
+  const labels = ["30d", "60d", "90d"];
+  let thisVehicle = base * 0.9;
+  let similar = base * 0.95;
+  const points = labels.map((label) => {
+    thisVehicle *= 1 + (rng() - 0.3) * 0.08;
+    similar *= 1 + (rng() - 0.45) * 0.05;
+    return { label, thisVehicle: Math.round(thisVehicle), similar: Math.round(similar) };
+  });
+  const trendPct = Math.round(
+    ((points[points.length - 1].thisVehicle - points[0].thisVehicle) / points[0].thisVehicle) * 1000,
+  ) / 10;
+  return { points, trendPct };
 }
 
 export function getAgentSteps(): AgentStep[] {

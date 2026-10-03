@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Dealer } from "@/lib/dealers";
 import { logoutAction } from "@/app/login/actions";
+import LiveChat from "@/components/LiveChat";
 
 const NAV_ITEMS = [
   { label: "Live Auctions", href: "/", icon: "📡" },
@@ -14,14 +15,23 @@ const NAV_ITEMS = [
   { label: "Analytics", href: "/analytics", icon: "📊" },
 ];
 
+const MOBILE_TAB_ITEMS = [
+  { label: "Live", href: "/", icon: "📡" },
+  { label: "Watchlist", href: "/watchlist", icon: "♡" },
+  { label: "Won", href: "/purchased", icon: "🧾" },
+  { label: "Assistant", href: "/assistant", icon: "✦" },
+];
+
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <>
       <div className="flex items-center gap-2 px-2 pb-6">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-600 text-sm font-bold">
+        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold shadow-lg shadow-blue-600/30">
           k
         </div>
-        <span className="font-semibold tracking-tight">keplerv</span>
+        <span className="font-semibold tracking-tight">
+          keplerv<span className="text-blue-400"> AI</span>
+        </span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">
@@ -60,9 +70,9 @@ export default function AppShell({
   const [accountOpen, setAccountOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-neutral-950 text-neutral-100">
+    <div className="flex min-h-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,130,246,0.12),transparent)] text-neutral-100">
       {/* Desktop sidebar */}
-      <aside className="hidden w-56 shrink-0 flex-col border-r border-white/10 px-3 py-4 lg:flex">
+      <aside className="hidden w-56 shrink-0 flex-col border-r border-white/10 bg-neutral-950/60 px-3 py-4 backdrop-blur lg:flex">
         <SidebarContent />
       </aside>
 
@@ -80,7 +90,7 @@ export default function AppShell({
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3 sm:gap-4 sm:px-6">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-neutral-950/70 px-4 py-3 backdrop-blur-md sm:gap-4 sm:px-6">
           <button
             onClick={() => setMenuOpen(true)}
             className="text-neutral-400 hover:text-neutral-100 lg:hidden"
@@ -140,8 +150,24 @@ export default function AppShell({
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto pb-16 lg:pb-0">{children}</main>
       </div>
+
+      {/* Mobile bottom tab bar */}
+      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-white/10 bg-neutral-950/95 backdrop-blur lg:hidden">
+        {MOBILE_TAB_ITEMS.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] text-neutral-400 hover:text-neutral-100"
+          >
+            <span className="text-base">{item.icon}</span>
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+
+      <LiveChat dealer={dealer} />
     </div>
   );
 }

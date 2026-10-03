@@ -89,9 +89,9 @@ function AuctionRow({
   return (
     <Link
       href={`/auctions/${v.lotNumber}`}
-      className={`flex flex-col gap-3 rounded-xl border p-3 transition-colors sm:flex-row sm:items-center ${
+      className={`group flex flex-col gap-3 rounded-2xl border p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg sm:flex-row sm:items-center ${
         highlight
-          ? "border-blue-500/30 bg-blue-600/[.04] hover:border-blue-500/50"
+          ? "border-blue-500/30 bg-gradient-to-r from-blue-600/[.06] to-transparent hover:border-blue-500/50 hover:shadow-blue-600/10"
           : "border-white/10 bg-white/[.02] hover:border-white/20 hover:bg-white/[.04]"
       }`}
     >
@@ -101,7 +101,7 @@ function AuctionRow({
             src={cover.file}
             alt={`${v.year} ${v.make} ${v.model}`}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, 112px"
           />
         )}
@@ -154,7 +154,7 @@ function AuctionRow({
         </div>
       </div>
 
-      <span className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white">
+      <span className="rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 text-center text-sm font-medium text-white shadow-md shadow-blue-600/20 transition-shadow group-hover:shadow-blue-600/40">
         Join Auction
       </span>
     </Link>
