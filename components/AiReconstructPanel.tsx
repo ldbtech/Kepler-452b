@@ -15,7 +15,7 @@ const MeshViewer = dynamic(() => import("@/components/MeshViewer"), {
 
 type Status = "idle" | "loading" | "error" | "done";
 
-export default function AiReconstructPanel({ imageUrl }: { imageUrl: string }) {
+export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] }) {
   const [url, setUrl] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -44,7 +44,7 @@ export default function AiReconstructPanel({ imageUrl }: { imageUrl: string }) {
       const res = await fetch(`${url}/reconstruct`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image_url: imageUrl, steps: 64 }),
+        body: JSON.stringify({ image_urls: imageUrls, steps: 64 }),
       });
       if (!res.ok) {
         const text = await res.text().catch(() => "");
@@ -98,7 +98,7 @@ export default function AiReconstructPanel({ imageUrl }: { imageUrl: string }) {
         <>
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-white" />
           <p className="text-sm text-neutral-400">
-            Generating 3D mesh from this photo — usually 20–60s on a free Colab GPU…
+            Preparing {imageUrls.length} reference photos and generating a 3D mesh on Colab…
           </p>
         </>
       ) : (
@@ -107,8 +107,9 @@ export default function AiReconstructPanel({ imageUrl }: { imageUrl: string }) {
             <p className="max-w-xs text-xs text-red-400">{error}</p>
           )}
           <p className="max-w-xs text-xs text-neutral-500">
-            Experimental — turns one photo into a rough 3D mesh using a real diffusion model
-            (Shap-E), running on your connected Colab notebook.
+            Uses up to six exterior photos as a multi-view reference board for Shap-E, then
+            returns an orbitable 3D mesh. This is an experimental reconstruction, not a
+            dimensionally accurate scan.
           </p>
           <button
             onClick={generate}

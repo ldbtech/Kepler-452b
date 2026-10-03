@@ -166,9 +166,9 @@ export default function AuctionDetail({
               <Vehicle3DPhoto vehicle={vehicle} />
             ) : tab === "AI 3D (Beta)" ? (
               <AiReconstructPanel
-                imageUrl={`https://www.keplerv.com${
-                  (buckets.Exterior[0] ?? vehicle.images[0]).file
-                }`}
+                imageUrls={(buckets.Exterior.length ? buckets.Exterior : vehicle.images)
+                  .slice(0, 6)
+                  .map((image) => `https://www.keplerv.com${image.file}`)}
               />
             ) : tab === "Photos" ? (
               <div className="grid h-full grid-cols-3 gap-1 overflow-y-auto p-1">

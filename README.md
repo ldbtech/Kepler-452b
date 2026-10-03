@@ -31,9 +31,9 @@ npm run gen:depth            # generate depth maps for the 3D viewer
 
 ## AI 3D reconstruction (experimental, Colab-powered)
 
-The auction detail page has an **"AI 3D (Beta)"** tab that turns one vehicle photo into a
-real 3D mesh using [Shap-E](https://github.com/openai/shap-e), an actual diffusion model — not
-a trick. It needs a GPU, which this app doesn't have access to on its own, so it calls out to
+The auction detail page has an **"AI 3D (Beta)"** tab that turns up to six vehicle exterior photos into a
+rough 3D mesh using [Shap-E](https://github.com/openai/shap-e), an actual diffusion model — not
+a trick. It needs a GPU, which this app does not have access to on its own, so it calls out to
 a notebook you run in [Google Colab](https://colab.research.google.com) (free tier GPU):
 
 1. Open [`colab/keplerv_diffusion_3d.ipynb`](colab/keplerv_diffusion_3d.ipynb) in Colab
@@ -42,7 +42,7 @@ a notebook you run in [Google Colab](https://colab.research.google.com) (free ti
 3. Get a free ngrok authtoken at https://dashboard.ngrok.com/get-started/your-authtoken.
 4. `Runtime` → `Run all`. First run downloads model weights (a few GB, several minutes).
 5. Copy the public URL the last cell prints, paste it into the "AI 3D (Beta)" tab on the
-   website when prompted.
+   website when prompted. The app sends up to six exterior views together as a reference board. Shap-E accepts one image condition, so this improves context but is not true multi-camera photogrammetry.
 
 This only works while that Colab notebook stays open and running — free GPU sessions
 disconnect after a period of idle time or ~12h max. It's a demo feature, not part of the
