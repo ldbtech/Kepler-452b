@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { getReconstructUrl, setReconstructUrl } from "@/lib/reconstructSettings";
+import { DEFAULT_RECONSTRUCT_URL, getReconstructUrl, setReconstructUrl } from "@/lib/reconstructSettings";
 
 const MeshViewer = dynamic(() => import("@/components/MeshViewer"), {
   ssr: false,
@@ -17,7 +17,7 @@ const MeshViewer = dynamic(() => import("@/components/MeshViewer"), {
 type Status = "idle" | "loading" | "error" | "done";
 
 export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] }) {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(DEFAULT_RECONSTRUCT_URL);
   const [urlInput, setUrlInput] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);

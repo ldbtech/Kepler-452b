@@ -31,18 +31,18 @@ npm run gen:depth            # generate depth maps for the 3D viewer
 
 ## AI 3D reconstruction (Colab-powered)
 
-The auction's **AI 3D (Beta)** tab uses [Tencent Hunyuan3D-2mv](https://huggingface.co/tencent/Hunyuan3D-2mv) from Hugging Face. It sends up to four separate exterior rotation photos to the Colab API. The notebook removes each background, then passes a dictionary of images to the multi-view geometry model. There is no contact sheet and no Shap-E fallback.
+The auction's **AI 3D (Beta)** tab uses [Tencent Hunyuan3D-2mv](https://huggingface.co/tencent/Hunyuan3D-2mv) from Hugging Face. It sends up to four separate exterior rotation photos to the Colab API. The RAM-efficient loader streams checkpoint tensors directly to the GPU rather than duplicating full float32 models in CPU memory. The notebook removes each background, then passes a dictionary of images to the multi-view geometry model. There is no contact sheet and no Shap-E fallback.
 
 1. Open [the notebook in Colab](https://colab.research.google.com/github/ldbtech/Kepler-452b/blob/main/colab/keplerv_diffusion_3d.ipynb).
 2. Select **T4 GPU** and **Run all**. Installation and first model download take several minutes.
 3. Enter your [ngrok authtoken](https://dashboard.ngrok.com/get-started/your-authtoken) when prompted.
-4. Paste the printed **Public API URL** into the website's AI 3D tab.
+4. The website automatically uses **https://aloha-anytime-zodiac.ngrok-free.dev**. The notebook requests that same stable domain when it starts; no URL entry is needed.
 
 **Upgrading an existing session:** stop the old server cell, reopen the updated notebook, and rerun setup/model/reconstruction/server cells. Reuse the existing ngrok token or enter it again. The website checks `/health` and refuses to use the old Shap-E service.
 
 The four camera slots represent the reference image and views approximately 90°, 180°, and 270° clockwise around the same vehicle. Auction corner images provide approximate angles; unrelated close-ups/interior photos are excluded. Foreground cutouts are saved to `/content/keplerv-inputs` for inspection. Input masks and camera consistency affect quality. This configuration generates normalized, **untextured** GLB geometry on a T4, with orbit, zoom, regeneration, and download in the website. It infers hidden details and cannot guarantee exact proportions, damage, or measurements.
 
-Keep the Colab runtime running; a GitHub/Vercel deployment does not host the GPU model. The ngrok URL is stored in the user's browser. Review Tencent's model license for your intended use before a production commercial rollout.
+Keep the Colab runtime running; a GitHub/Vercel deployment does not host the GPU model. The stable ngrok domain is the app default, with an optional browser override. The server stays active for the lifetime of the Colab session. Colab can terminate the runtime; guaranteed continuous availability requires an always-on GPU host. Review Tencent's model license for your intended use before a production commercial rollout.
 
 ## Deploying
 

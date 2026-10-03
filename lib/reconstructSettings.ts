@@ -1,17 +1,18 @@
 "use client";
 
-// The Colab notebook's ngrok URL is ephemeral — it changes every time the
-// notebook is restarted — so it's kept client-side in localStorage rather
-// than baked into the deployed site.
+// Use the account's stable ngrok domain by default. A browser override is
+// available if the reconstruction service moves to another host.
 const KEY = "keplerv_reconstruct_url";
 
+export const DEFAULT_RECONSTRUCT_URL = "https://aloha-anytime-zodiac.ngrok-free.dev";
+
 export function getReconstructUrl(): string {
-  if (typeof window === "undefined") return "";
+  if (typeof window === "undefined") return DEFAULT_RECONSTRUCT_URL;
   try {
     const saved = window.localStorage.getItem(KEY);
-    return saved ? new URL(saved).origin : "";
+    return saved ? new URL(saved).origin : DEFAULT_RECONSTRUCT_URL;
   } catch {
-    return "";
+    return DEFAULT_RECONSTRUCT_URL;
   }
 }
 
