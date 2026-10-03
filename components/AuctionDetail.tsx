@@ -17,6 +17,7 @@ import {
 import { getDealerAiRecommendation } from "@/lib/recommend";
 import ConditionGauge from "@/components/ConditionGauge";
 import MarketChart from "@/components/MarketChart";
+import AiReconstructPanel from "@/components/AiReconstructPanel";
 import { useLiveAuction } from "@/lib/useLiveAuction";
 import {
   IconAlertTriangle,
@@ -41,10 +42,11 @@ const Vehicle3DPhoto = dynamic(() => import("@/components/Vehicle3DPhoto"), {
   ),
 });
 
-type ViewTab = "3D View" | "Photos" | "Interior" | "Mechanical" | "Damage";
+type ViewTab = "3D View" | "AI 3D (Beta)" | "Photos" | "Interior" | "Mechanical" | "Damage";
 
 const VIEW_TABS: { key: ViewTab; icon: typeof IconCube; category?: ImageCategory }[] = [
   { key: "3D View", icon: IconCube, category: "Exterior" },
+  { key: "AI 3D (Beta)", icon: IconSparkle },
   { key: "Photos", icon: IconImage },
   { key: "Interior", icon: IconSeat, category: "Interior" },
   { key: "Mechanical", icon: IconGear, category: "Mechanical" },
@@ -162,6 +164,12 @@ export default function AuctionDetail({
           <div className="relative mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl bg-neutral-900">
             {tab === "3D View" ? (
               <Vehicle3DPhoto vehicle={vehicle} />
+            ) : tab === "AI 3D (Beta)" ? (
+              <AiReconstructPanel
+                imageUrl={`https://www.keplerv.com${
+                  (buckets.Exterior[0] ?? vehicle.images[0]).file
+                }`}
+              />
             ) : tab === "Photos" ? (
               <div className="grid h-full grid-cols-3 gap-1 overflow-y-auto p-1">
                 {vehicle.images.map((img) => (
@@ -198,7 +206,11 @@ export default function AuctionDetail({
           <div className="mt-3 flex flex-wrap gap-1.5">
             {VIEW_TABS.map((t) => {
               const count = t.category ? buckets[t.category].length : totalPhotoCount;
-              const disabled = t.key !== "3D View" && t.key !== "Photos" && count === 0;
+              const disabled =
+                t.key !== "3D View" &&
+                t.key !== "Photos" &&
+                t.key !== "AI 3D (Beta)" &&
+                count === 0;
               const Icon = t.icon;
               return (
                 <button
