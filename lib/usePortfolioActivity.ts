@@ -61,7 +61,9 @@ export function usePortfolioActivity(vehicles: Vehicle[], dealer: Dealer) {
       const v = vehicles[Math.floor(Math.random() * vehicles.length)];
       const rec = getDealerAiRecommendation(v, dealer);
       const label = `${v.year} ${v.make} ${v.model}`;
-      const r = Math.random();
+      // Circuit breaker: paused autonomy means the AI keeps watching and
+      // re-scoring, but never takes an action on this dealer's behalf.
+      const r = dealer.pausedAutonomy ? 0.6 + Math.random() * 0.4 : Math.random();
 
       if (r < 0.3) {
         const amt = Math.round((rec.recommendedMaxBid * (0.4 + Math.random() * 0.4)) / 10) * 10;
@@ -94,14 +96,18 @@ export function usePortfolioActivity(vehicles: Vehicle[], dealer: Dealer) {
         const left = remaining.current[v.lotNumber];
         if (left === undefined) continue;
         if (left <= 0) {
-          const score = getDealerAiRecommendation(v, dealer).confidence;
-          const won = Math.random() * 100 < Math.max(25, Math.min(75, score - 10));
           const label = `${v.year} ${v.make} ${v.model}`;
-          if (won) {
-            const amt = getDealerAiRecommendation(v, dealer).recommendedMaxBid;
-            push("won", v, `Won ${label} — ${formatUsd(Math.round((amt * 0.85) / 10) * 10)}`);
+          if (dealer.pausedAutonomy) {
+            push("scan", v, `Auction ended for ${label} — autonomy paused, no bid was placed`);
           } else {
-            push("lost", v, `Lost ${label} to a competing bid — staying within budget`);
+            const score = getDealerAiRecommendation(v, dealer).confidence;
+            const won = Math.random() * 100 < Math.max(25, Math.min(75, score - 10));
+            if (won) {
+              const amt = getDealerAiRecommendation(v, dealer).recommendedMaxBid;
+              push("won", v, `Won ${label} — ${formatUsd(Math.round((amt * 0.85) / 10) * 10)}`);
+            } else {
+              push("lost", v, `Lost ${label} to a competing bid — staying within budget`);
+            }
           }
           // Keep the demo alive: this lot re-enters the rotation shortly.
           remaining.current[v.lotNumber] = 90 + Math.floor(Math.random() * 240);

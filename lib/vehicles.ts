@@ -48,6 +48,9 @@ export type Vehicle = {
   mechanicalIssues?: MechanicalIssue[];
   ownerPricingMode?: "manual" | "ai";
   ownerMinBid?: number;
+  // Seller control (see /listings/[lotNumber]): end the auction the moment
+  // a bid reaches this amount, rather than waiting out the clock.
+  ownerAutoAcceptAt?: number;
 };
 
 export function getVehicles(): Vehicle[] {

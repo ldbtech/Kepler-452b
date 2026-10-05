@@ -32,6 +32,8 @@ export function useLiveAuction({
   agents,
   guardrailMax,
   suggestedMax,
+  forceAutoBidOff,
+  sellerAutoAcceptAt,
 }: {
   dealer: Dealer;
   lotNumber: number;
@@ -39,6 +41,13 @@ export function useLiveAuction({
   agents: BiddingAgent[];
   guardrailMax: number;
   suggestedMax: number;
+  // Circuit breaker: when true, this dealer's AI never auto-bids here,
+  // regardless of the toggle below — set from dealer.pausedAutonomy.
+  forceAutoBidOff?: boolean;
+  // Seller control: end the auction the moment the bid reaches this
+  // amount, instead of waiting out the clock — set from a listing's
+  // ownerAutoAcceptAt.
+  sellerAutoAcceptAt?: number;
 }) {
   const increment = Math.max(50, Math.round((initial.nextBid * 0.04) / 10) * 10) || 50;
 
@@ -58,7 +67,7 @@ export function useLiveAuction({
       timestamp: Date.now() - a.secondsAgo * 1000,
     })),
   );
-  const [autoBid, setAutoBid] = useState(true);
+  const [autoBid, setAutoBid] = useState(!forceAutoBidOff);
   const [maxAutoBid, setMaxAutoBid] = useState(Math.min(suggestedMax, guardrailMax));
   const [ended, setEnded] = useState(false);
   const [result, setResult] = useState<AuctionResult>(null);
@@ -83,6 +92,13 @@ export function useLiveAuction({
       setEnded(true);
     }
   }, [remaining]);
+
+  useEffect(() => {
+    if (sellerAutoAcceptAt && currentBid >= sellerAutoAcceptAt && !endedRef.current) {
+      endedRef.current = true;
+      setEnded(true);
+    }
+  }, [currentBid, sellerAutoAcceptAt]);
 
   useEffect(() => {
     if (ended && !result) {
@@ -127,7 +143,7 @@ export function useLiveAuction({
             if (amt > currentBid) pushBid(chosen.label, amt, false);
           }
         }
-      } else if (autoBid && nextBid <= maxAutoBid) {
+      } else if (autoBid && !forceAutoBidOff && nextBid <= maxAutoBid) {
         pushBid(dealer.name, nextBid, true);
       } else if (Math.random() < 0.4) {
         const candidates = agents.filter(

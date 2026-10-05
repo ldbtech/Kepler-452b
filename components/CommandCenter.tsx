@@ -15,12 +15,14 @@ import {
 import { usePortfolioActivity, type ActivityEvent } from "@/lib/usePortfolioActivity";
 import { askAi } from "@/lib/askAi";
 import { getOwnerListings } from "@/lib/listings";
+import { useEffectiveDealer } from "@/lib/guardrails";
 import LiveCountdown from "@/components/LiveCountdown";
 import {
   IconAlertTriangle,
   IconChat,
   IconDollar,
   IconSearch,
+  IconShield,
   IconSparkle,
   IconTrophy,
   IconUsers,
@@ -39,12 +41,17 @@ function detailHref(source: Vehicle["source"], lotNumber: number): string {
 }
 
 export default function CommandCenter({
-  dealer,
+  dealer: dealerProp,
   vehicles: scrapedVehicles,
 }: {
   dealer: Dealer;
   vehicles: Vehicle[];
 }) {
+  // Layers in any saved guardrail overrides (see /guardrails) on top of the
+  // base dealer record — every downstream ranking/recommendation call below
+  // already accepts a plain Dealer, so nothing else here needs to change.
+  const dealer = useEffectiveDealer(dealerProp);
+
   // Owner listings (see lib/listings.ts) live in this browser's localStorage,
   // so they're loaded after mount and merged in here — joining the exact
   // same ranking, recommendation, and live-activity engine as scraped lots.
@@ -78,17 +85,31 @@ export default function CommandCenter({
       {/* Autopilot header */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          </span>
-          <span className="text-sm font-medium text-ink">Autopilot active</span>
-          <span className="text-sm text-ink-3">
-            — watching {vehicles.length} auctions for {dealer.name}
-          </span>
+          {dealer.pausedAutonomy ? (
+            <>
+              <span className="flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full bg-amber-500">
+                <IconShield className="h-1.5 w-1.5 text-white" strokeWidth={3} />
+              </span>
+              <span className="text-sm font-medium text-ink">Autonomy paused</span>
+              <span className="text-sm text-ink-3">
+                — watching {vehicles.length} auctions for {dealer.name}, not bidding
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-sm font-medium text-ink">Autopilot active</span>
+              <span className="text-sm text-ink-3">
+                — watching {vehicles.length} auctions for {dealer.name}
+              </span>
+            </>
+          )}
         </div>
         <div className="flex gap-2">
-          <Stat value={String(activeAutoBids)} label="Active auto-bids" />
+          <Stat value={dealer.pausedAutonomy ? "0" : String(activeAutoBids)} label="Active auto-bids" />
           <Stat value={String(strongMatches)} label="Strong matches" />
           <Stat value={formatUsd(dealer.totalBudgetCap)} label="Budget available" />
         </div>

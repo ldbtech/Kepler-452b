@@ -95,3 +95,14 @@ export function createOwnerListing(input: NewListingInput): Vehicle {
   writeAll(all);
   return vehicle;
 }
+
+// Seller control from the listing detail page: sell the moment a bid
+// reaches this amount, instead of waiting out the clock. `amount` of
+// `undefined` turns auto-accept back off.
+export function updateOwnerAutoAccept(lotNumber: number, amount: number | undefined) {
+  const all = readAll();
+  const next = all.map((v) =>
+    v.lotNumber === lotNumber ? { ...v, ownerAutoAcceptAt: amount } : v,
+  );
+  writeAll(next);
+}

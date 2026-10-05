@@ -15,6 +15,8 @@ import {
   getMarketInsights,
 } from "@/lib/demo";
 import { getDealerAiRecommendation } from "@/lib/recommend";
+import { useEffectiveDealer } from "@/lib/guardrails";
+import { updateOwnerAutoAccept } from "@/lib/listings";
 import ConditionGauge from "@/components/ConditionGauge";
 import MarketChart from "@/components/MarketChart";
 import AiReconstructPanel from "@/components/AiReconstructPanel";
@@ -28,6 +30,7 @@ import {
   IconGear,
   IconImage,
   IconSeat,
+  IconShield,
   IconSparkle,
   IconTrophy,
   IconUsers,
@@ -69,14 +72,18 @@ function colorForName(name: string): string {
 
 export default function AuctionDetail({
   vehicle,
-  dealer,
+  dealer: dealerProp,
 }: {
   vehicle: Vehicle;
   dealer: Dealer;
 }) {
+  // Layers in any saved guardrail overrides (see /guardrails) — every call
+  // below already accepts a plain Dealer, so nothing else here changes.
+  const dealer = useEffectiveDealer(dealerProp);
   const isOwnerListing = vehicle.source === "owner";
   const [tab, setTab] = useState<ViewTab>(isOwnerListing ? "Photos" : "3D View");
   const [zoomedPhoto, setZoomedPhoto] = useState<string | null>(null);
+  const [autoAcceptAt, setAutoAcceptAt] = useState(vehicle.ownerAutoAcceptAt);
   const buckets = imagesByCategory(vehicle);
   const rec = getDealerAiRecommendation(vehicle, dealer);
   // A seller's minimum bid is a real floor on the auction, independent of
@@ -98,7 +105,14 @@ export default function AuctionDetail({
     agents,
     guardrailMax: dealer.maxBidPerVehicle,
     suggestedMax: rec.recommendedMaxBid,
+    forceAutoBidOff: dealer.pausedAutonomy,
+    sellerAutoAcceptAt: autoAcceptAt,
   });
+
+  function setListingAutoAccept(amount: number | undefined) {
+    setAutoAcceptAt(amount);
+    updateOwnerAutoAccept(vehicle.lotNumber, amount);
+  }
 
   const [customBid, setCustomBidRaw] = useState(initialAuction.nextBid);
   const [syncedNextBid, setSyncedNextBid] = useState(initialAuction.nextBid);
@@ -351,8 +365,9 @@ export default function AuctionDetail({
           <div className="mt-2 grid grid-cols-2 gap-2">
             <button
               onClick={() => auction.setAutoBid((v) => !v)}
-              disabled={auction.ended}
-              className={`rounded-lg border py-2 text-xs font-medium transition-colors disabled:opacity-40 ${
+              disabled={auction.ended || dealer.pausedAutonomy}
+              title={dealer.pausedAutonomy ? "Paused by your autonomy circuit breaker" : undefined}
+              className={`rounded-lg border py-2 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                 auction.autoBid
                   ? "border-emerald-500/30 bg-emerald-500/[.08] text-emerald-400"
                   : "border-line text-ink-2 hover:bg-fill"
@@ -369,6 +384,13 @@ export default function AuctionDetail({
               Set Max
             </button>
           </div>
+
+          {dealer.pausedAutonomy && (
+            <p className="mt-2 flex items-center gap-1 text-[11px] text-amber-400">
+              <IconShield className="h-3 w-3 shrink-0" strokeWidth={1.8} /> Your guardrails have
+              autonomy paused — only manual bids go through.
+            </p>
+          )}
 
           {showMaxInput && !auction.ended && (
             <div className="mt-2 flex items-center gap-2">
@@ -442,6 +464,61 @@ export default function AuctionDetail({
           <Row label="Title" value="Clean" valueClass="text-emerald-400" />
           <Row label="Location" value={vehicle.location ?? "—"} />
         </div>
+
+        {/* Seller controls — autonomy the seller holds over their own listing */}
+        {isOwnerListing && (
+          <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">
+            <div className="mb-1 flex items-center gap-1.5 text-sm font-medium text-ink">
+              <IconShield className="h-4 w-4" strokeWidth={1.5} />
+              Seller Controls
+            </div>
+            <p className="mb-3 text-xs text-ink-3">
+              Your own guardrail on this listing — separate from any buyer&apos;s.
+            </p>
+            <label className="flex items-center justify-between gap-2 text-sm text-ink-2">
+              <span className="flex items-center gap-2">
+                <span
+                  role="switch"
+                  aria-checked={autoAcceptAt !== undefined}
+                  onClick={() =>
+                    setListingAutoAccept(
+                      autoAcceptAt !== undefined
+                        ? undefined
+                        : vehicle.ownerMinBid ?? rec.recommendedMaxBid,
+                    )
+                  }
+                  className={`relative h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors ${
+                    autoAcceptAt !== undefined ? "bg-accent" : "bg-fill-strong"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
+                      autoAcceptAt !== undefined ? "translate-x-4" : "translate-x-0.5"
+                    }`}
+                  />
+                </span>
+                Auto-accept the winning bid
+              </span>
+            </label>
+            {autoAcceptAt !== undefined && (
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-xs text-ink-3">at or above</span>
+                <input
+                  type="number"
+                  value={autoAcceptAt}
+                  min={vehicle.ownerMinBid ?? 0}
+                  onChange={(e) => setListingAutoAccept(Number(e.target.value) || 0)}
+                  className="w-28 rounded-lg border border-line bg-surface px-2 py-1 text-xs text-ink focus:border-line-strong focus:outline-none"
+                />
+              </div>
+            )}
+            <p className="mt-3 text-[11px] leading-relaxed text-ink-3">
+              {autoAcceptAt !== undefined
+                ? "The sale finalizes the instant a bid reaches this amount — no need to wait out the clock."
+                : "Off: this listing runs the full countdown like any other auction."}
+            </p>
+          </div>
+        )}
 
         {/* Condition & AI Analysis */}
         <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">

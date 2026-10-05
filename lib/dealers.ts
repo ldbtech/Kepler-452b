@@ -4,6 +4,18 @@
 // session is just a signed-free cookie holding the dealer id (prototype only).
 export type RiskTolerance = "Low" | "Low – Moderate" | "Moderate" | "Moderate – High";
 
+// A single policy constraint a dealer has taught their AI, beyond the base
+// numeric guardrails — e.g. "never bid on flood damage" or "cap SUVs at
+// $12,000". See lib/guardrails.ts for how these are created and enforced.
+export type CustomRule = {
+  id: string;
+  kind: "exclude-category" | "exclude-make" | "cap-category" | "note";
+  label: string;
+  category?: string;
+  make?: string;
+  capAmount?: number;
+};
+
 export type Dealer = {
   id: string;
   name: string;
@@ -17,6 +29,12 @@ export type Dealer = {
   riskTolerance: RiskTolerance;
   interventionPreference: string;
   accent: string;
+  // Editable policy layer — present on the base DEALERS records as empty
+  // defaults, overridden client-side per lib/guardrails.ts and merged back
+  // onto a Dealer object so every consumer keeps working unchanged.
+  askAboveAmount?: number;
+  pausedAutonomy?: boolean;
+  customRules?: CustomRule[];
 };
 
 export const DEALERS: Dealer[] = [
