@@ -51,3 +51,15 @@ Standard Next.js app, fully static-generated (`next build`) — deploys on [Verc
 ```bash
 npx vercel
 ```
+
+### Calibrated photo reconstruction
+
+Open [the photogrammetry Colab notebook](https://colab.research.google.com/github/ldbtech/Kepler-452b/blob/main/colab/keplerv_photogrammetry.ipynb) on a T4 GPU and run all. This is a separate service from the diffusion notebook; stop its ngrok tunnel before starting the new one.
+
+The notebook builds CUDA COLMAP 3.11.1 from its official source (the distribution package lacks CUDA dense stereo). First setup may take 10–20 minutes. Upload 3–60 exterior photos, at most 40 MB total. Capture 30–60 overlapping views of a stationary vehicle for the first experiment. Four separated auction views may fail registration. Intrinsics and poses are estimated from feature matches; dimensions have arbitrary scale. Reflective paint and glass can produce holes or incorrect surfaces.
+
+Before ngrok starts, the notebook displays foreground cutouts, runs SIFT matching, camera estimation, dense stereo, fusion and meshing, and shows an interactive local mesh preview. A failed test blocks API startup. The test workspace contains `colmap.log`, registered camera files, cutouts, and mesh statistics. Inspect the preview before accepting it; a successful mesh does not guarantee geometric accuracy.
+
+In the website's AI 3D panel choose **Photo reconstruction**, optionally upload a larger set, then generate. Jobs run in the background and report stages to the website. Results open directly in the orbit/pan/zoom viewer with a wireframe toggle. No Blender or export workflow is required. **AI generation** remains available with the original Hunyuan service.
+
+The photogrammetry backend lives in `colab/photogrammetry_service.py`; its source is embedded in the notebook so Run all does not depend on fetching a mutable service script. After edits, regenerate the service code cell from that file. Local syntax, TypeScript, and lint checks do not confirm a successful CUDA build or vehicle reconstruction; those require the Colab image test with real photos.
