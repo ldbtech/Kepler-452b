@@ -39,6 +39,7 @@ const DAMAGE_RISK: Record<string, "Low" | "Moderate" | "High"> = {
   "UNDERCARRIAGE": "High",
   "NORMAL WEAR": "Low",
   "MECHANICAL": "Low",
+  "OWNER REPORTED ISSUES": "Moderate",
 };
 
 export type AgentStep = { label: string; done: boolean };
@@ -124,9 +125,12 @@ export function getAiRecommendation(vehicle: Vehicle): AiRecommendation {
   const repairCost = Math.round((marketValue * repairCostPct) / 50) * 50;
   const targetProfitPct = 0.15;
 
+  // A seller-set minimum bid is a real floor on the auction, not just
+  // another input to the valuation curve — never recommend bidding below it.
   const recommendedMaxBid = Math.max(
     Math.round(marketValue * 0.2),
     Math.round((marketValue * (1 - targetProfitPct) - repairCost) / 50) * 50,
+    vehicle.ownerMinBid ? Math.round(vehicle.ownerMinBid / 50) * 50 : 0,
   );
   const expectedMargin = marketValue - recommendedMaxBid - repairCost;
   const expectedMarginPct = Math.max(
@@ -139,8 +143,9 @@ export function getAiRecommendation(vehicle: Vehicle): AiRecommendation {
   );
   const comparableCount = 6 + Math.floor(rng() * 14);
 
-  const reasoning =
-    riskLevel === "High"
+  const reasoning = vehicle.mechanicalIssues?.length
+    ? `The seller disclosed ${vehicle.mechanicalIssues.length} mechanical issue${vehicle.mechanicalIssues.length > 1 ? "s" : ""} (${vehicle.mechanicalIssues.map((i) => i.location).join(", ")}), so I'm pricing in that repair risk against ${comparableCount} comparables.`
+    : riskLevel === "High"
       ? `Damage profile ("${vehicle.damage ?? "unknown"}") carries meaningful repair uncertainty, so I'm bidding conservatively against ${comparableCount} comparable listings.`
       : riskLevel === "Moderate"
         ? `Repair scope looks contained for a "${vehicle.damage ?? "reported"}" loss, and similar vehicles are trading near this range across ${comparableCount} comparables.`

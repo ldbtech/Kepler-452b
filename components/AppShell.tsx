@@ -10,6 +10,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import {
   IconBell,
   IconBroadcast,
+  IconCar,
   IconChart,
   IconHeart,
   IconMenu,
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
   { label: "Live Auctions", href: "/live", icon: IconBroadcast },
   { label: "Watchlist", href: "/watchlist", icon: IconHeart },
   { label: "Purchased", href: "/purchased", icon: IconReceipt },
+  { label: "Sell a Car", href: "/sell", icon: IconCar },
   { label: "AI Assistant", href: "/assistant", icon: IconSparkle },
   { label: "Guardrails", href: "/guardrails", icon: IconShield },
   { label: "Analytics", href: "/analytics", icon: IconChart },

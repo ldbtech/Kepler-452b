@@ -31,6 +31,7 @@ import {
   IconSparkle,
   IconTrophy,
   IconUsers,
+  IconZoomIn,
 } from "@/components/icons";
 
 const Vehicle3DPhoto = dynamic(() => import("@/components/Vehicle3DPhoto"), {
@@ -73,11 +74,17 @@ export default function AuctionDetail({
   vehicle: Vehicle;
   dealer: Dealer;
 }) {
-  const [tab, setTab] = useState<ViewTab>("3D View");
+  const isOwnerListing = vehicle.source === "owner";
+  const [tab, setTab] = useState<ViewTab>(isOwnerListing ? "Photos" : "3D View");
+  const [zoomedPhoto, setZoomedPhoto] = useState<string | null>(null);
   const buckets = imagesByCategory(vehicle);
   const rec = getDealerAiRecommendation(vehicle, dealer);
+  // A seller's minimum bid is a real floor on the auction, independent of
+  // this particular dealer's own guardrail (which only clamps *their*
+  // recommendation, and could otherwise be read as undercutting the seller).
+  const auctionFloor = Math.max(rec.recommendedMaxBid, vehicle.ownerMinBid ?? 0);
   const initialAuction = useMemo(
-    () => getAuctionState(vehicle, rec.recommendedMaxBid),
+    () => getAuctionState(vehicle, auctionFloor),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [vehicle.lotNumber],
   );
@@ -138,12 +145,18 @@ export default function AuctionDetail({
           <h1 className="mt-3 text-xl font-semibold tracking-tight text-ink">
             {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.trim ?? ""}
           </h1>
+          {isOwnerListing && (
+            <p className="mt-1 text-xs text-ink-3">
+              Listed by <span className="text-ink-2">{vehicle.sellerName}</span> · Direct from
+              owner
+            </p>
+          )}
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {[
               vehicle.odometer ? `${vehicle.odometer.toLocaleString()} mi` : null,
               vehicle.condition,
               vehicle.color,
-              "Clean Title",
+              isOwnerListing ? null : "Clean Title",
             ]
               .filter(Boolean)
               .map((chip) => (
@@ -154,7 +167,15 @@ export default function AuctionDetail({
                   {chip}
                 </span>
               ))}
+            {vehicle.ownerMinBid && (
+              <span className="rounded-full bg-accent/10 px-2.5 py-1 text-xs text-accent">
+                Min bid {formatUsd(vehicle.ownerMinBid)}
+              </span>
+            )}
           </div>
+          {isOwnerListing && vehicle.description && (
+            <p className="mt-2 text-sm leading-relaxed text-ink-2">{vehicle.description}</p>
+          )}
           <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ink-3">
             <IconUsers className="h-3.5 w-3.5" />
             {initialAuction.bidderCount} bidders online
@@ -166,11 +187,15 @@ export default function AuctionDetail({
               <Vehicle3DPhoto vehicle={vehicle} />
             ) : tab === "AI 3D (Beta)" ? (
               <AiReconstructPanel
-                imageUrls={vehicle.rotationOrder
-                  .map((label) => vehicle.images.find((image) => image.label === label))
-                  .filter((image) => image !== undefined)
-                  .slice(0, 4)
-                  .map((image) => `https://www.keplerv.com${image.file}`)}
+                imageUrls={
+                  isOwnerListing
+                    ? vehicle.images.slice(0, 4).map((image) => image.file)
+                    : vehicle.rotationOrder
+                        .map((label) => vehicle.images.find((image) => image.label === label))
+                        .filter((image) => image !== undefined)
+                        .slice(0, 4)
+                        .map((image) => `https://www.keplerv.com${image.file}`)
+                }
               />
             ) : tab === "Photos" ? (
               <div className="grid h-full grid-cols-3 gap-1 overflow-y-auto p-1">
@@ -183,6 +208,7 @@ export default function AuctionDetail({
                       src={img.file}
                       alt={img.label}
                       fill
+                      unoptimized={img.file.startsWith("data:")}
                       className="object-cover"
                       sizes="200px"
                     />
@@ -486,6 +512,48 @@ export default function AuctionDetail({
           <MarketChart insights={insights} />
         </div>
 
+        {/* Seller-reported mechanical issues */}
+        {vehicle.mechanicalIssues && vehicle.mechanicalIssues.length > 0 && (
+          <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-12">
+            <div className="mb-3 flex items-center gap-1.5 text-sm font-medium text-ink">
+              <IconAlertTriangle className="h-4 w-4 text-amber-400" strokeWidth={1.5} />
+              Seller-Reported Mechanical Issues
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {vehicle.mechanicalIssues.map((issue) => (
+                <div key={issue.id} className="rounded-xl border border-line p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
+                      {issue.location}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-ink">{issue.title}</div>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-3">{issue.description}</p>
+                  {issue.photo && (
+                    <button
+                      type="button"
+                      onClick={() => setZoomedPhoto(issue.photo!)}
+                      className="group relative mt-2 block aspect-video w-full overflow-hidden rounded-lg bg-neutral-900"
+                    >
+                      <Image
+                        src={issue.photo}
+                        alt={`Close-up of ${issue.location.toLowerCase()} issue`}
+                        fill
+                        unoptimized
+                        className="object-cover transition-transform duration-200 group-hover:scale-105"
+                        sizes="320px"
+                      />
+                      <span className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full bg-black/70 px-2 py-1 text-[10px] text-white">
+                        <IconZoomIn className="h-3 w-3" strokeWidth={1.8} /> Zoom in
+                      </span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Bidding Agents */}
         <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-8">
           <div className="mb-3 text-sm font-medium text-ink">
@@ -561,6 +629,30 @@ export default function AuctionDetail({
           </p>
         </div>
       </div>
+
+      {zoomedPhoto && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-6"
+          onClick={() => setZoomedPhoto(null)}
+        >
+          <div className="relative h-full w-full max-w-3xl">
+            <Image
+              src={zoomedPhoto}
+              alt="Mechanical issue close-up, zoomed in"
+              fill
+              unoptimized
+              className="object-contain"
+              sizes="768px"
+            />
+          </div>
+          <button
+            onClick={() => setZoomedPhoto(null)}
+            className="absolute right-5 top-5 rounded-full bg-black/70 px-3 py-1.5 text-xs text-white hover:bg-black"
+          >
+            Close
+          </button>
+        </div>
+      )}
     </div>
   );
 }

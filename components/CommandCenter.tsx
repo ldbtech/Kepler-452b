@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Vehicle } from "@/lib/vehicles";
@@ -14,6 +14,7 @@ import {
 } from "@/lib/recommend";
 import { usePortfolioActivity, type ActivityEvent } from "@/lib/usePortfolioActivity";
 import { askAi } from "@/lib/askAi";
+import { getOwnerListings } from "@/lib/listings";
 import LiveCountdown from "@/components/LiveCountdown";
 import {
   IconAlertTriangle,
@@ -33,13 +34,30 @@ const EVENT_STYLE: Record<ActivityEvent["kind"], { icon: typeof IconDollar; colo
   scan: { icon: IconSearch, color: "text-ink-3" },
 };
 
+function detailHref(source: Vehicle["source"], lotNumber: number): string {
+  return source === "owner" ? `/listings/${lotNumber}` : `/auctions/${lotNumber}`;
+}
+
 export default function CommandCenter({
   dealer,
-  vehicles,
+  vehicles: scrapedVehicles,
 }: {
   dealer: Dealer;
   vehicles: Vehicle[];
 }) {
+  // Owner listings (see lib/listings.ts) live in this browser's localStorage,
+  // so they're loaded after mount and merged in here — joining the exact
+  // same ranking, recommendation, and live-activity engine as scraped lots.
+  const [ownerListings, setOwnerListings] = useState<Vehicle[]>([]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOwnerListings(getOwnerListings());
+  }, []);
+  const vehicles = useMemo(
+    () => [...ownerListings, ...scrapedVehicles],
+    [ownerListings, scrapedVehicles],
+  );
+
   const ranked = rankVehiclesForDealer(vehicles, dealer);
   const { events, now } = usePortfolioActivity(vehicles, dealer);
   const [command, setCommand] = useState("");
@@ -104,7 +122,7 @@ export default function CommandCenter({
             return (
               <Link
                 key={v.lotNumber}
-                href={`/auctions/${v.lotNumber}`}
+                href={detailHref(v.source, v.lotNumber)}
                 className="flex items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/[.06] px-4 py-3 hover:border-amber-500/50"
               >
                 <IconAlertTriangle className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.5} />
@@ -136,7 +154,7 @@ export default function CommandCenter({
                 return (
                   <Link
                     key={e.id}
-                    href={`/auctions/${e.lotNumber}`}
+                    href={detailHref(e.source, e.lotNumber)}
                     className={`flex items-start gap-2.5 rounded-lg px-2 py-2 text-sm hover:bg-fill ${
                       i === 0 ? "animate-[fadein_.4s_ease]" : ""
                     }`}
@@ -183,11 +201,13 @@ function CompactCard({ item, dealer }: { item: ScoredVehicle; dealer: Dealer }) 
   const v = item.vehicle;
   const cover = v.images.find((img) => img.label === v.rotationOrder[0]) ?? v.images[0];
   const rec = getDealerAiRecommendation(v, dealer);
-  const auction = getAuctionState(v, rec.recommendedMaxBid);
+  // Never preview a current bid below the seller's own minimum, even if this
+  // dealer's guardrail clamped their personal recommendation lower.
+  const auction = getAuctionState(v, Math.max(rec.recommendedMaxBid, v.ownerMinBid ?? 0));
 
   return (
     <Link
-      href={`/auctions/${v.lotNumber}`}
+      href={detailHref(v.source, v.lotNumber)}
       className="group block overflow-hidden rounded-2xl border border-line bg-surface hover:border-line-strong"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-900">
@@ -196,6 +216,7 @@ function CompactCard({ item, dealer }: { item: ScoredVehicle; dealer: Dealer }) 
             src={cover.file}
             alt={`${v.year} ${v.make} ${v.model}`}
             fill
+            unoptimized={cover.file.startsWith("data:")}
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="420px"
           />
@@ -203,6 +224,11 @@ function CompactCard({ item, dealer }: { item: ScoredVehicle; dealer: Dealer }) 
         <span className="absolute left-2 top-2 flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
           <span className="h-1 w-1 rounded-full bg-white" /> LIVE
         </span>
+        {v.source === "owner" && (
+          <span className="absolute right-2 top-2 rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold text-white">
+            Direct from owner
+          </span>
+        )}
       </div>
       <div className="p-4">
         <h3 className="font-medium text-ink">
@@ -231,21 +257,33 @@ function MiniRow({ item, dealer }: { item: ScoredVehicle; dealer: Dealer }) {
   const v = item.vehicle;
   const cover = v.images.find((img) => img.label === v.rotationOrder[0]) ?? v.images[0];
   const rec = getDealerAiRecommendation(v, dealer);
-  const auction = getAuctionState(v, rec.recommendedMaxBid);
+  const auction = getAuctionState(v, Math.max(rec.recommendedMaxBid, v.ownerMinBid ?? 0));
 
   return (
     <Link
-      href={`/auctions/${v.lotNumber}`}
+      href={detailHref(v.source, v.lotNumber)}
       className="flex items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2 hover:border-line-strong"
     >
       <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-900">
         {cover && (
-          <Image src={cover.file} alt={v.model} fill className="object-cover" sizes="64px" />
+          <Image
+            src={cover.file}
+            alt={v.model}
+            fill
+            unoptimized={cover.file.startsWith("data:")}
+            className="object-cover"
+            sizes="64px"
+          />
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium text-ink">
+        <div className="flex items-center gap-1.5 truncate text-sm font-medium text-ink">
           {v.year} {v.make} {v.model}
+          {v.source === "owner" && (
+            <span className="shrink-0 rounded bg-accent/10 px-1.5 py-0.5 text-[9px] font-medium text-accent">
+              Owner
+            </span>
+          )}
         </div>
         <div className="text-xs text-ink-3">
           <LiveCountdown initialSeconds={auction.secondsRemaining} /> · {v.location ?? "—"}

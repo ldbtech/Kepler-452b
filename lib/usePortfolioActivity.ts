@@ -13,6 +13,7 @@ export type ActivityEvent = {
   kind: ActivityKind;
   text: string;
   lotNumber: number;
+  source: "auction" | "owner";
   timestamp: number;
 };
 
@@ -37,8 +38,20 @@ export function usePortfolioActivity(vehicles: Vehicle[], dealer: Dealer) {
     );
   }, [vehicles]);
 
-  function push(kind: ActivityKind, lotNumber: number, text: string) {
-    setEvents((prev) => [{ id: nextId.current++, kind, lotNumber, text, timestamp: Date.now() }, ...prev].slice(0, 40));
+  function push(kind: ActivityKind, vehicle: Vehicle, text: string) {
+    setEvents((prev) =>
+      [
+        {
+          id: nextId.current++,
+          kind,
+          lotNumber: vehicle.lotNumber,
+          source: vehicle.source ?? "auction",
+          text,
+          timestamp: Date.now(),
+        },
+        ...prev,
+      ].slice(0, 40),
+    );
   }
 
   useEffect(() => {
@@ -52,17 +65,17 @@ export function usePortfolioActivity(vehicles: Vehicle[], dealer: Dealer) {
 
       if (r < 0.3) {
         const amt = Math.round((rec.recommendedMaxBid * (0.4 + Math.random() * 0.4)) / 10) * 10;
-        push("bid", v.lotNumber, `Auto-bid placed on ${label} — ${formatUsd(amt)}`);
+        push("bid", v, `Auto-bid placed on ${label} — ${formatUsd(amt)}`);
       } else if (r < 0.55) {
-        push("outbid", v.lotNumber, `Outbid on ${label} — re-bidding within your guardrails`);
+        push("outbid", v, `Outbid on ${label} — re-bidding within your guardrails`);
       } else if (r < 0.8) {
         push(
           "scan",
-          v.lotNumber,
+          v,
           `Re-scored ${label}: ${rec.riskLevel.toLowerCase()} risk, ${rec.confidence}% confidence`,
         );
       } else {
-        push("scan", v.lotNumber, `Watching ${label} — comparing against ${rec.comparableCount} recent sales`);
+        push("scan", v, `Watching ${label} — comparing against ${rec.comparableCount} recent sales`);
       }
     }, 2600 + Math.random() * 2200);
 
@@ -86,9 +99,9 @@ export function usePortfolioActivity(vehicles: Vehicle[], dealer: Dealer) {
           const label = `${v.year} ${v.make} ${v.model}`;
           if (won) {
             const amt = getDealerAiRecommendation(v, dealer).recommendedMaxBid;
-            push("won", v.lotNumber, `Won ${label} — ${formatUsd(Math.round((amt * 0.85) / 10) * 10)}`);
+            push("won", v, `Won ${label} — ${formatUsd(Math.round((amt * 0.85) / 10) * 10)}`);
           } else {
-            push("lost", v.lotNumber, `Lost ${label} to a competing bid — staying within budget`);
+            push("lost", v, `Lost ${label} to a competing bid — staying within budget`);
           }
           // Keep the demo alive: this lot re-enters the rotation shortly.
           remaining.current[v.lotNumber] = 90 + Math.floor(Math.random() * 240);

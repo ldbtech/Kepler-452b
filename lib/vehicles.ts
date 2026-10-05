@@ -2,6 +2,27 @@ import vehiclesData from "@/data/vehicles.json";
 
 export type VehicleImage = { label: string; file: string; depthFile?: string };
 
+export const MECHANICAL_ISSUE_LOCATIONS = [
+  "Engine",
+  "Transmission",
+  "Electrical",
+  "Brakes & Suspension",
+  "Body & Paint",
+  "Interior",
+  "Exhaust",
+  "Other",
+] as const;
+
+export type MechanicalIssueLocation = (typeof MECHANICAL_ISSUE_LOCATIONS)[number];
+
+export type MechanicalIssue = {
+  id: string;
+  location: MechanicalIssueLocation;
+  title: string;
+  description: string;
+  photo?: string;
+};
+
 export type Vehicle = {
   lotNumber: number;
   year: number;
@@ -18,6 +39,15 @@ export type Vehicle = {
   images: VehicleImage[];
   rotationOrder: string[];
   fetchedAt: string;
+  // Present only for vehicles listed directly by an owner through /sell
+  // (stored client-side in localStorage — see lib/listings.ts) rather than
+  // scraped auction inventory. Scraped vehicles simply omit these fields.
+  source?: "auction" | "owner";
+  sellerName?: string;
+  description?: string;
+  mechanicalIssues?: MechanicalIssue[];
+  ownerPricingMode?: "manual" | "ai";
+  ownerMinBid?: number;
 };
 
 export function getVehicles(): Vehicle[] {

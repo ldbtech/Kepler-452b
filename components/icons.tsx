@@ -237,3 +237,54 @@ export function IconSearch(props: IconProps) {
     </Base>
   );
 }
+
+export function IconCar(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M4 16V11l1.8-4.8A2 2 0 0 1 7.7 5h8.6a2 2 0 0 1 1.9 1.2L20 11v5" />
+      <path d="M4 16h16v2.5a.9.9 0 0 1-.9.9H18a1 1 0 0 1-1-1V17H7v.9a1 1 0 0 1-1 1H4.9a.9.9 0 0 1-.9-.9Z" />
+      <circle cx="7.5" cy="16" r="1.4" />
+      <circle cx="16.5" cy="16" r="1.4" />
+      <path d="M4 11h16" />
+    </Base>
+  );
+}
+
+export function IconPlus(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Base>
+  );
+}
+
+export function IconTrash(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M4 7h16" />
+      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+      <path d="M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" />
+      <path d="M10 11v6M14 11v6" />
+    </Base>
+  );
+}
+
+export function IconUpload(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M12 16V4" />
+      <path d="m7 9 5-5 5 5" />
+      <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+    </Base>
+  );
+}
+
+export function IconZoomIn(props: IconProps) {
+  return (
+    <Base {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M11 8v6M8 11h6" />
+      <path d="m21 21-4.3-4.3" />
+    </Base>
+  );
+}
