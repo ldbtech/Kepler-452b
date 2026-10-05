@@ -21,6 +21,7 @@ export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] 
   const [photos, setPhotos] = useState<File[]>([]);
   const [stage, setStage] = useState("");
   const [alignment, setAlignment] = useState("");
+  const [qualityWarnings, setQualityWarnings] = useState<string[]>([]);
   const [url, setUrl] = useState(DEFAULT_RECONSTRUCT_URL);
   const [urlInput, setUrlInput] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -58,6 +59,7 @@ export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] 
     if (!url) return;
     setStage("");
     setAlignment("");
+    setQualityWarnings([]);
     setStatus("loading");
     setError(null);
     try {
@@ -83,6 +85,7 @@ export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] 
           setStage(job.stage || "Processing photos");
           if (job.status === "error") throw new Error(job.error);
           if (job.status === "done") {
+            setQualityWarnings(job.info.warnings || []);
             setAlignment(`${job.info.registered_images}/${job.info.input_images} photos aligned${job.info.warnings?.length ? ` · ${job.info.warnings.length} photo quality warnings` : ""}`);
             completed = true; break;
           }
@@ -149,7 +152,10 @@ export default function AiReconstructPanel({ imageUrls }: { imageUrls: string[] 
     return (
       <div className="relative h-full w-full">
         <MeshViewer url={meshUrl} />
-        {alignment && <p className="absolute bottom-12 left-3 rounded-lg bg-black/70 px-3 py-2 text-xs text-white">{alignment}</p>}
+        {alignment && <div className="absolute bottom-12 left-3 max-w-xs rounded-lg bg-black/70 px-3 py-2 text-xs text-white">
+          <p>{alignment}</p>
+          {qualityWarnings.length > 0 && <details className="mt-1"><summary className="cursor-pointer">Photo feedback</summary><ul className="mt-2 max-h-24 overflow-y-auto">{qualityWarnings.map((warning) => <li key={warning}>{warning}</li>)}</ul></details>}
+        </div>}
         <div className="absolute right-3 top-3 flex gap-2">
           <button onClick={() => { setStatus("idle"); setMeshUrl(null); }} className="rounded-lg bg-black/70 px-3 py-2 text-xs text-white">Regenerate</button>
         </div>
