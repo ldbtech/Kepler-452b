@@ -31,14 +31,6 @@ export default function LandingPage() {
             <a href="#how-it-works" className="hover:text-ink">How it works</a>
             <a href="#vision" className="hover:text-ink">Our vision</a>
             <a href="#product" className="hover:text-ink">Live data</a>
-            <a
-              href="https://github.com/ldbtech/Kepler-452b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-ink"
-            >
-              GitHub
-            </a>
           </nav>
           <div className="ml-auto flex items-center gap-2 sm:ml-0">
             <ThemeToggle />
@@ -57,7 +49,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-xs text-ink-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Live prototype, built on real Copart auction data
+            Live prototype, built on real wholesale auction data
           </div>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
             The car marketplace,
@@ -159,7 +151,7 @@ export default function LandingPage() {
                 Not a mockup
               </h2>
               <p className="mt-3 max-w-xl text-xl font-medium sm:text-2xl">
-                These are real, currently-live lots pulled from Copart — same data the demo
+                These are real, currently-live wholesale auction lots — same data the demo
                 dashboard runs on.
               </p>
             </div>
@@ -233,6 +225,11 @@ export default function LandingPage() {
             body="Today, a buyer can realistically track a handful of live lots at once. An AI agent doesn't have that limit. The next version of keplerv watches every relevant auction across every lane, simultaneously, and only surfaces the moments that need a human decision."
           />
           <VisionRow
+            icon={IconShield}
+            title="Beyond wholesale — a marketplace open to anyone"
+            body="Today, every vehicle on keplerv comes from wholesale and salvage auctions — that's what makes a focused demo possible. Next, any owner will be able to list a car directly: the same AI inspection, pricing, and guardrail-bound bidding that runs on auction lots today works just as well on a vehicle sitting in someone's driveway."
+          />
+          <VisionRow
             icon={IconChart}
             title="Autonomous portfolio management, not one-off bids"
             body="Instead of bidding lot by lot, you'll hand the AI a budget and a mandate — 'build me 20 clean-title sedans under $8k this month' — and it allocates, re-allocates, and executes across dozens of simultaneous auctions to hit that target, the way a trading desk manages a portfolio instead of a single stock."
@@ -278,19 +275,9 @@ export default function LandingPage() {
       <footer className="mx-auto max-w-6xl px-6 py-10 text-xs text-ink-3">
         <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
           <span>© {new Date().getFullYear()} keplerv. Built for the AI for Good competition.</span>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/ldbtech/Kepler-452b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-ink"
-            >
-              GitHub
-            </a>
-            <a href="mailto:hello@keplerv.com" className="hover:text-ink">
-              hello@keplerv.com
-            </a>
-          </div>
+          <a href="mailto:hello@keplerv.com" className="hover:text-ink">
+            hello@keplerv.com
+          </a>
         </div>
       </footer>
     </div>
