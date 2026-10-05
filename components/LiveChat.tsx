@@ -60,8 +60,25 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
 
-  function send() {
-    const text = input.trim();
+  // Lets other parts of the app (e.g. the command bar on the Live Auctions
+  // page) hand the assistant a question without prop-drilling chat state
+  // everywhere — a deliberately loose coupling for a widget that's meant to
+  // be usable from any page.
+  useEffect(() => {
+    function onAsk(e: Event) {
+      const text = (e as CustomEvent<string>).detail;
+      if (text) {
+        setOpen(true);
+        send(text);
+      }
+    }
+    window.addEventListener("keplerv:ask", onAsk);
+    return () => window.removeEventListener("keplerv:ask", onAsk);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function send(overrideText?: string) {
+    const text = (overrideText ?? input).trim();
     if (!text) return;
     const userMsg: Message = { id: nextId.current++, from: "user", text };
     setMessages((m) => [...m, userMsg]);

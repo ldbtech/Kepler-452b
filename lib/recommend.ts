@@ -26,6 +26,13 @@ export function getDealerAiRecommendation(vehicle: Vehicle, dealer: Dealer): AiR
   };
 }
 
+// True when the AI's unclamped recommendation wanted to bid more than this
+// dealer's guardrail allows — i.e. a real decision the guardrail suppressed,
+// worth surfacing for human review rather than silently capping forever.
+export function wasCappedByGuardrail(vehicle: Vehicle, dealer: Dealer): boolean {
+  return getAiRecommendation(vehicle).recommendedMaxBid > dealer.maxBidPerVehicle;
+}
+
 export type ScoredVehicle = {
   vehicle: Vehicle;
   score: number;
