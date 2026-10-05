@@ -17,12 +17,12 @@ export default async function AssistantPage() {
   return (
     <AppShell dealer={dealer}>
       <div className="mx-auto max-w-2xl px-4 py-5 sm:px-6 sm:py-6">
-        <h1 className="text-lg font-semibold text-neutral-100">AI Assistant</h1>
-        <p className="text-sm text-neutral-500">
+        <h1 className="text-lg font-semibold text-ink">AI Assistant</h1>
+        <p className="text-sm text-ink-3">
           Get clear, actionable insights about any vehicle or auction.
         </p>
 
-        <div className="mt-6 rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
+        <div className="mt-6 rounded-2xl border border-line bg-surface p-4">
           <div className="mb-3 flex items-center gap-3">
             <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-900">
               {cover && (
@@ -32,11 +32,11 @@ export default async function AssistantPage() {
             <div className="min-w-0">
               <Link
                 href={`/auctions/${v.lotNumber}`}
-                className="truncate text-sm font-medium text-neutral-100 hover:underline"
+                className="truncate text-sm font-medium text-ink hover:underline"
               >
                 {v.year} {v.make} {v.model}
               </Link>
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+              <div className="flex items-center gap-1.5 text-xs text-ink-3">
                 <span className="flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
                   LIVE
                 </span>
@@ -44,8 +44,8 @@ export default async function AssistantPage() {
             </div>
           </div>
 
-          <div className="rounded-lg bg-white/[.03] p-3 text-sm leading-relaxed text-neutral-300">
-            <div className="mb-1 font-medium text-neutral-200">Why this bid?</div>
+          <div className="rounded-lg bg-surface p-3 text-sm leading-relaxed text-ink-2">
+            <div className="mb-1 font-medium text-ink">Why this bid?</div>
             {rec.reasoning}
           </div>
 
@@ -77,7 +77,7 @@ export default async function AssistantPage() {
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-neutral-600">
+        <p className="mt-4 text-xs text-ink-3">
           Showing the top-recommended vehicle for {dealer.name}. For an ask-anything chat, use
           the assistant bubble in the bottom corner on any page.
         </p>
@@ -96,10 +96,10 @@ function InsightCard({
   body: string;
 }) {
   return (
-    <div className="rounded-lg border border-white/[.08] bg-white/[.02] p-2.5">
-      <Icon className="mb-1.5 h-4 w-4 text-neutral-500" strokeWidth={1.5} />
-      <div className="font-medium text-neutral-200">{title}</div>
-      <div className="mt-0.5 text-neutral-500">{body}</div>
+    <div className="rounded-lg border border-line bg-surface p-2.5">
+      <Icon className="mb-1.5 h-4 w-4 text-ink-3" strokeWidth={1.5} />
+      <div className="font-medium text-ink">{title}</div>
+      <div className="mt-0.5 text-ink-3">{body}</div>
     </div>
   );
 }

@@ -38,17 +38,17 @@ export default function MarketChart({ insights }: { insights: MarketInsights }) 
         <path d={similarPath} fill="none" stroke="#525252" strokeWidth={2} strokeDasharray="4 3" />
         <path d={thisPath} fill="none" stroke="#3b82f6" strokeWidth={2.5} />
       </svg>
-      <div className="mt-1 flex items-center justify-between text-[11px] text-neutral-500">
+      <div className="mt-1 flex items-center justify-between text-[11px] text-ink-3">
         {points.map((p) => (
           <span key={p.label}>{p.label}</span>
         ))}
       </div>
       <div className="mt-2 flex items-center gap-4 text-xs">
-        <span className="flex items-center gap-1.5 text-neutral-400">
-          <span className="h-1.5 w-3 rounded-full bg-blue-500" /> This vehicle
+        <span className="flex items-center gap-1.5 text-ink-2">
+          <span className="h-1.5 w-3 rounded-full bg-accent" /> This vehicle
         </span>
-        <span className="flex items-center gap-1.5 text-neutral-500">
-          <span className="h-1.5 w-3 rounded-full bg-neutral-600" /> Similar vehicles
+        <span className="flex items-center gap-1.5 text-ink-3">
+          <span className="h-1.5 w-3 rounded-full bg-ink-3" /> Similar vehicles
         </span>
         <span className={`ml-auto font-medium ${trendPct >= 0 ? "text-emerald-400" : "text-red-400"}`}>
           {trendPct >= 0 ? "+" : ""}

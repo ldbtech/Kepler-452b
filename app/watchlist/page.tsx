@@ -17,8 +17,8 @@ export default async function WatchlistPage() {
   return (
     <AppShell dealer={dealer}>
       <div className="px-4 py-5 sm:px-6 sm:py-6">
-        <h1 className="text-lg font-semibold text-neutral-100">Watchlist</h1>
-        <p className="text-sm text-neutral-500">
+        <h1 className="text-lg font-semibold text-ink">Watchlist</h1>
+        <p className="text-sm text-ink-3">
           {watchlist.length} vehicles {dealer.name} is tracking
         </p>
 
@@ -30,7 +30,7 @@ export default async function WatchlistPage() {
               <Link
                 key={v.lotNumber}
                 href={`/auctions/${v.lotNumber}`}
-                className="overflow-hidden rounded-xl border border-white/[.08] bg-white/[.02] transition-colors hover:border-white/20"
+                className="overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-line-strong"
               >
                 <div className="relative aspect-[4/3] bg-neutral-900">
                   {cover && (
@@ -47,10 +47,10 @@ export default async function WatchlistPage() {
                   </span>
                 </div>
                 <div className="p-3">
-                  <h2 className="truncate text-sm font-medium text-neutral-100">
+                  <h2 className="truncate text-sm font-medium text-ink">
                     {v.year} {v.make} {v.model}
                   </h2>
-                  <p className="mt-0.5 text-xs text-neutral-500">
+                  <p className="mt-0.5 text-xs text-ink-3">
                     Recommended max {formatUsd(rec.recommendedMaxBid)}
                   </p>
                 </div>
@@ -60,7 +60,7 @@ export default async function WatchlistPage() {
         </div>
 
         {watchlist.length === 0 && (
-          <p className="mt-6 text-sm text-neutral-500">
+          <p className="mt-6 text-sm text-ink-3">
             No strong matches in the current batch — check Live Auctions for the full list.
           </p>
         )}

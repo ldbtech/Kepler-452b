@@ -26,7 +26,7 @@ export default function LoginForm({
           <div
             key={dealer.id}
             className={`rounded-2xl border p-4 transition-colors ${
-              isSelected ? "border-blue-500 bg-blue-600/10" : "border-white/[.08] bg-white/[.02]"
+              isSelected ? "border-accent bg-accent/10" : "border-line bg-surface"
             }`}
           >
             <div
@@ -35,9 +35,9 @@ export default function LoginForm({
             >
               {dealer.initials}
             </div>
-            <h3 className="font-medium text-neutral-100">{dealer.name}</h3>
-            <p className="text-xs text-neutral-500">{dealer.location}</p>
-            <p className="mt-2 text-xs text-neutral-500">
+            <h3 className="font-medium text-ink">{dealer.name}</h3>
+            <p className="text-xs text-ink-3">{dealer.location}</p>
+            <p className="mt-2 text-xs text-ink-3">
               Focus: {dealer.focusCategories.join(", ").toLowerCase()}
             </p>
 
@@ -49,7 +49,7 @@ export default function LoginForm({
                   type="password"
                   name="password"
                   defaultValue={dealer.password}
-                  className="w-full rounded-lg border border-white/[.08] bg-white/[.04] px-3 py-1.5 text-sm text-neutral-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-line bg-fill px-3 py-1.5 text-sm text-ink focus:outline-none focus:ring-1 focus:ring-accent"
                   placeholder="Password"
                 />
                 {hadError && (
@@ -57,18 +57,18 @@ export default function LoginForm({
                 )}
                 <button
                   type="submit"
-                  className="rounded-lg bg-blue-600 py-1.5 text-sm font-medium text-white hover:bg-blue-500"
+                  className="rounded-lg bg-accent py-1.5 text-sm font-medium text-white hover:opacity-90"
                 >
                   Sign in as {dealer.name}
                 </button>
-                <p className="text-center text-[10px] text-neutral-600">
+                <p className="text-center text-[10px] text-ink-3">
                   Prototype demo — password is prefilled
                 </p>
               </form>
             ) : (
               <button
                 onClick={() => setSelected(dealer.id)}
-                className="mt-4 w-full rounded-lg border border-white/15 py-1.5 text-sm font-medium text-neutral-300 hover:border-white/30 hover:text-white"
+                className="mt-4 w-full rounded-lg border border-line py-1.5 text-sm font-medium text-ink-2 hover:border-line-strong hover:text-ink"
               >
                 Continue as {dealer.name}
               </button>

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import type { Dealer } from "@/lib/dealers";
 import { logoutAction } from "@/app/login/actions";
 import LiveChat from "@/components/LiveChat";
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   IconBell,
   IconBroadcast,
@@ -18,7 +19,7 @@ import {
 } from "@/components/icons";
 
 const NAV_ITEMS = [
-  { label: "Live Auctions", href: "/", icon: IconBroadcast },
+  { label: "Live Auctions", href: "/live", icon: IconBroadcast },
   { label: "Watchlist", href: "/watchlist", icon: IconHeart },
   { label: "Purchased", href: "/purchased", icon: IconReceipt },
   { label: "AI Assistant", href: "/assistant", icon: IconSparkle },
@@ -27,7 +28,7 @@ const NAV_ITEMS = [
 ];
 
 const MOBILE_TAB_ITEMS = [
-  { label: "Live", href: "/", icon: IconBroadcast },
+  { label: "Live", href: "/live", icon: IconBroadcast },
   { label: "Watchlist", href: "/watchlist", icon: IconHeart },
   { label: "Won", href: "/purchased", icon: IconReceipt },
   { label: "Assistant", href: "/assistant", icon: IconSparkle },
@@ -37,12 +38,12 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
     <>
-      <div className="flex items-center gap-2 px-2 pb-6">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-sm font-semibold text-neutral-900">
+      <Link href="/live" className="flex items-center gap-2 px-2 pb-6">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-ink text-sm font-semibold text-base">
           k
         </div>
-        <span className="font-medium tracking-tight text-neutral-100">keplerv</span>
-      </div>
+        <span className="font-medium tracking-tight text-ink">keplerv</span>
+      </Link>
 
       <nav className="flex flex-1 flex-col gap-0.5">
         {NAV_ITEMS.map((item) => {
@@ -55,8 +56,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                 active
-                  ? "bg-white/[.06] text-neutral-100"
-                  : "text-neutral-500 hover:bg-white/[.04] hover:text-neutral-200"
+                  ? "bg-fill text-ink"
+                  : "text-ink-3 hover:bg-fill hover:text-ink"
               }`}
             >
               <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
@@ -66,12 +67,12 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         })}
       </nav>
 
-      <div className="rounded-lg border border-white/[.06] p-3 text-xs">
-        <div className="mb-1 flex items-center gap-1.5 text-neutral-400">
+      <div className="rounded-lg border border-line p-3 text-xs">
+        <div className="mb-1 flex items-center gap-1.5 text-ink-2">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           AI agents active
         </div>
-        <p className="text-neutral-600">Monitoring 2,847 vehicles</p>
+        <p className="text-ink-3">Monitoring 2,847 vehicles</p>
       </div>
     </>
   );
@@ -88,9 +89,9 @@ export default function AppShell({
   const [accountOpen, setAccountOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-neutral-950 text-neutral-100">
+    <div className="flex min-h-screen bg-base text-ink">
       {/* Desktop sidebar */}
-      <aside className="hidden w-56 shrink-0 flex-col border-r border-white/[.06] px-3 py-4 lg:flex">
+      <aside className="hidden w-56 shrink-0 flex-col border-r border-line px-3 py-4 lg:flex">
         <SidebarContent />
       </aside>
 
@@ -98,17 +99,17 @@ export default function AppShell({
       {menuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setMenuOpen(false)} />
-          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-white/[.06] bg-neutral-950 px-3 py-4">
+          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-line bg-base px-3 py-4">
             <SidebarContent onNavigate={() => setMenuOpen(false)} />
           </aside>
         </div>
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/[.06] bg-neutral-950/80 px-4 py-3 backdrop-blur-md sm:gap-4 sm:px-6">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-base/80 px-4 py-3 backdrop-blur-md sm:gap-4 sm:px-6">
           <button
             onClick={() => setMenuOpen(true)}
-            className="text-neutral-500 hover:text-neutral-200 lg:hidden"
+            className="text-ink-3 hover:text-ink lg:hidden"
             aria-label="Open menu"
           >
             <IconMenu className="h-5 w-5" />
@@ -116,7 +117,9 @@ export default function AppShell({
 
           <div className="flex-1" />
 
-          <button className="relative text-neutral-500 hover:text-neutral-200">
+          <ThemeToggle />
+
+          <button className="relative text-ink-3 hover:text-ink">
             <IconBell className="h-5 w-5" />
             <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-red-500" />
           </button>
@@ -124,7 +127,7 @@ export default function AppShell({
           <div className="relative">
             <button
               onClick={() => setAccountOpen((v) => !v)}
-              className="flex items-center gap-2 rounded-full border border-white/[.06] py-1 pl-1 pr-1 text-sm sm:pr-3"
+              className="flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-1 text-sm sm:pr-3"
             >
               <div
                 className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-medium"
@@ -133,19 +136,19 @@ export default function AppShell({
                 {dealer.initials}
               </div>
               <div className="hidden text-left leading-tight sm:block">
-                <div className="text-xs font-medium text-neutral-200">{dealer.name}</div>
-                <div className="text-[10px] text-neutral-600">Dealer Account</div>
+                <div className="text-xs font-medium text-ink">{dealer.name}</div>
+                <div className="text-[10px] text-ink-3">Dealer Account</div>
               </div>
             </button>
             {accountOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setAccountOpen(false)} />
-                <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-lg border border-white/[.08] bg-neutral-900 p-1 shadow-xl">
-                  <div className="px-2 py-1.5 text-xs text-neutral-500">
+                <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-lg border border-line bg-surface p-1 shadow-xl">
+                  <div className="px-2 py-1.5 text-xs text-ink-3">
                     {dealer.name} · {dealer.location}
                   </div>
                   <form action={logoutAction}>
-                    <button className="w-full rounded-md px-2 py-1.5 text-left text-sm text-neutral-300 hover:bg-white/5">
+                    <button className="w-full rounded-md px-2 py-1.5 text-left text-sm text-ink-2 hover:bg-fill">
                       Switch dealership
                     </button>
                   </form>
@@ -159,14 +162,14 @@ export default function AppShell({
       </div>
 
       {/* Mobile bottom tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-white/[.06] bg-neutral-950/95 backdrop-blur lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-base/95 backdrop-blur lg:hidden">
         {MOBILE_TAB_ITEMS.map((item) => {
           const Icon = item.icon;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className="flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] text-neutral-500 hover:text-neutral-200"
+              className="flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] text-ink-3 hover:text-ink"
             >
               <Icon className="h-5 w-5" strokeWidth={1.5} />
               {item.label}

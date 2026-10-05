@@ -8,14 +8,14 @@ export default async function GuardrailsPage() {
   return (
     <AppShell dealer={dealer}>
       <div className="px-4 py-5 sm:px-6 sm:py-6">
-        <h1 className="text-lg font-semibold text-neutral-100">Guardrails Settings</h1>
-        <p className="text-sm text-neutral-500">
+        <h1 className="text-lg font-semibold text-ink">Guardrails Settings</h1>
+        <p className="text-sm text-ink-3">
           Set your parameters and let AI handle the rest.
         </p>
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card label="Max bid per vehicle">
-            <div className="text-2xl font-semibold text-neutral-100">
+            <div className="text-2xl font-semibold text-ink">
               {formatUsd(dealer.maxBidPerVehicle)}
             </div>
             <input
@@ -27,14 +27,14 @@ export default async function GuardrailsPage() {
               disabled
               className="mt-3 w-full accent-blue-600"
             />
-            <div className="mt-1 flex justify-between text-xs text-neutral-600">
+            <div className="mt-1 flex justify-between text-xs text-ink-3">
               <span>$1,000</span>
               <span>$50,000</span>
             </div>
           </Card>
 
           <Card label="Total budget cap">
-            <div className="text-2xl font-semibold text-neutral-100">
+            <div className="text-2xl font-semibold text-ink">
               {formatUsd(dealer.totalBudgetCap)}
             </div>
             <input
@@ -46,7 +46,7 @@ export default async function GuardrailsPage() {
               disabled
               className="mt-3 w-full accent-blue-600"
             />
-            <div className="mt-1 flex justify-between text-xs text-neutral-600">
+            <div className="mt-1 flex justify-between text-xs text-ink-3">
               <span>$10,000</span>
               <span>$500,000</span>
             </div>
@@ -59,15 +59,15 @@ export default async function GuardrailsPage() {
                   key={level}
                   className={`rounded-full px-3 py-1.5 text-sm ${
                     dealer.riskTolerance.includes(level)
-                      ? "bg-blue-600 text-white"
-                      : "bg-white/[.04] text-neutral-500"
+                      ? "bg-accent text-white"
+                      : "bg-fill text-ink-3"
                   }`}
                 >
                   {level}
                 </span>
               ))}
             </div>
-            <p className="mt-3 text-xs text-neutral-500">
+            <p className="mt-3 text-xs text-ink-3">
               {dealer.riskTolerance === "Low"
                 ? "Focus on reliable, lower-risk vehicles with strong margins."
                 : "Accepts moderate repair uncertainty for better margins."}
@@ -75,19 +75,19 @@ export default async function GuardrailsPage() {
           </Card>
 
           <Card label="Intervention preference">
-            <div className="flex flex-col gap-2 text-sm text-neutral-300">
+            <div className="flex flex-col gap-2 text-sm text-ink-2">
               {["Only if flagged", "Ask for high-value bids", "Manual approval for all"].map(
                 (opt) => (
                   <label key={opt} className="flex items-center gap-2">
                     <span
                       className={`flex h-4 w-4 items-center justify-center rounded-full border ${
                         dealer.interventionPreference === opt
-                          ? "border-blue-500"
-                          : "border-white/20"
+                          ? "border-accent"
+                          : "border-line-strong"
                       }`}
                     >
                       {dealer.interventionPreference === opt && (
-                        <span className="h-2 w-2 rounded-full bg-blue-500" />
+                        <span className="h-2 w-2 rounded-full bg-accent" />
                       )}
                     </span>
                     {opt}
@@ -98,7 +98,7 @@ export default async function GuardrailsPage() {
           </Card>
         </div>
 
-        <p className="mt-6 text-xs text-neutral-600">
+        <p className="mt-6 text-xs text-ink-3">
           Prototype note: guardrails are fixed per demo dealer account — editing isn&apos;t
           wired up yet.
         </p>
@@ -109,8 +109,8 @@ export default async function GuardrailsPage() {
 
 function Card({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4">
-      <div className="mb-3 text-sm text-neutral-500">{label}</div>
+    <div className="rounded-2xl border border-line bg-surface p-4">
+      <div className="mb-3 text-sm text-ink-3">{label}</div>
       {children}
     </div>
   );

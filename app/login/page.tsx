@@ -9,14 +9,14 @@ export default async function LoginPage({
   const params = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-6 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-base px-6 py-12">
       <div className="w-full max-w-3xl">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-lg font-bold text-white">
+          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-white">
             k
           </div>
-          <h1 className="text-xl font-semibold text-neutral-100">keplerv</h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <h1 className="text-xl font-semibold text-ink">keplerv</h1>
+          <p className="mt-1 text-sm text-ink-3">
             Sign in to your dealer account to see live auctions and AI recommendations
             tailored to your inventory.
           </p>
@@ -24,7 +24,7 @@ export default async function LoginPage({
 
         <LoginForm
           dealers={DEALERS}
-          next={params.next ?? "/"}
+          next={params.next ?? "/live"}
           initialError={params.error === "1"}
           initialDealerId={params.dealerId ?? null}
         />

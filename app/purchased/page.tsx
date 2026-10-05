@@ -18,13 +18,13 @@ export default async function PurchasedPage() {
   return (
     <AppShell dealer={dealer}>
       <div className="px-4 py-5 sm:px-6 sm:py-6">
-        <h1 className="text-lg font-semibold text-neutral-100">Purchased</h1>
-        <p className="text-sm text-neutral-500">Auctions {dealer.name} has won</p>
+        <h1 className="text-lg font-semibold text-ink">Purchased</h1>
+        <p className="text-sm text-ink-3">Auctions {dealer.name} has won</p>
 
         <div className="mt-6">
           <LiveWins dealerId={dealer.id} />
 
-          <div className="mb-3 text-sm font-medium text-neutral-500">Past wins</div>
+          <div className="mb-3 text-sm font-medium text-ink-3">Past wins</div>
           <div className="flex flex-col gap-3">
             {purchased.map(({ vehicle: v }, i) => {
               const cover =
@@ -36,7 +36,7 @@ export default async function PurchasedPage() {
                 <Link
                   key={v.lotNumber}
                   href={`/auctions/${v.lotNumber}`}
-                  className="flex items-center gap-4 rounded-xl border border-white/[.08] bg-white/[.02] p-3 hover:border-white/20"
+                  className="flex items-center gap-4 rounded-xl border border-line bg-surface p-3 hover:border-line-strong"
                 >
                   <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-neutral-900">
                     {cover && (
@@ -50,23 +50,23 @@ export default async function PurchasedPage() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-400">
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-ink-2">
                       <IconTrophy className="h-3.5 w-3.5" strokeWidth={1.5} />
                       You Won
                     </div>
-                    <h2 className="truncate font-medium text-neutral-100">
+                    <h2 className="truncate font-medium text-ink">
                       {v.year} {v.make} {v.model} {v.trim ?? ""}
                     </h2>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-ink-3">
                       Your max bid {formatUsd(rec.recommendedMaxBid)} · AI confidence{" "}
                       {rec.confidence}%
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="text-[10px] uppercase tracking-wide text-neutral-500">
+                    <div className="text-[10px] uppercase tracking-wide text-ink-3">
                       Final price
                     </div>
-                    <div className="font-semibold text-neutral-100">
+                    <div className="font-semibold text-ink">
                       {formatUsd(finalPrice)}
                     </div>
                   </div>

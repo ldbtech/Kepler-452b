@@ -8,7 +8,7 @@ import { COOKIE_NAME } from "@/lib/session";
 export async function loginAction(formData: FormData) {
   const dealerId = String(formData.get("dealerId") ?? "");
   const password = String(formData.get("password") ?? "");
-  const next = String(formData.get("next") ?? "/");
+  const next = String(formData.get("next") ?? "/live");
 
   const dealer = getDealer(dealerId);
   if (!dealer || dealer.password !== password) {
@@ -23,7 +23,7 @@ export async function loginAction(formData: FormData) {
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  redirect(next || "/");
+  redirect(next || "/live");
 }
 
 export async function logoutAction() {

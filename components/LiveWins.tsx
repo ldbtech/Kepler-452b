@@ -22,7 +22,7 @@ export default function LiveWins({ dealerId }: { dealerId: string }) {
 
   return (
     <div className="mb-6">
-      <div className="mb-3 text-sm font-medium text-neutral-300">Just won this session</div>
+      <div className="mb-3 text-sm font-medium text-ink-2">Just won this session</div>
       <div className="flex flex-col gap-3">
         {wins.map((w) => {
           const v = getVehicle(w.lotNumber);
@@ -50,15 +50,15 @@ export default function LiveWins({ dealerId }: { dealerId: string }) {
                   <IconTrophy className="h-3.5 w-3.5" strokeWidth={1.5} />
                   You Won
                 </div>
-                <h2 className="truncate font-medium text-neutral-100">
+                <h2 className="truncate font-medium text-ink">
                   {v.year} {v.make} {v.model} {v.trim ?? ""}
                 </h2>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-ink-3">
                   Won {new Date(w.wonAt).toLocaleTimeString()}
                 </p>
               </div>
               <div className="text-right">
-                <div className="text-[10px] uppercase tracking-wide text-neutral-500">
+                <div className="text-[10px] uppercase tracking-wide text-ink-3">
                   Final price
                 </div>
                 <div className="font-semibold text-emerald-400">{formatUsd(w.finalPrice)}</div>

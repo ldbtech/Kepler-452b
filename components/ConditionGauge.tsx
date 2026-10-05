@@ -22,7 +22,7 @@ export default function ConditionGauge({ score }: { score: number }) {
           r={RADIUS}
           fill="none"
           stroke="currentColor"
-          className="text-white/10"
+          className="text-line"
           strokeWidth={STROKE}
         />
         <circle
@@ -39,8 +39,8 @@ export default function ConditionGauge({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-sm font-semibold text-neutral-100">{score}</span>
-        <span className="text-[9px] text-neutral-500">/100</span>
+        <span className="text-sm font-semibold text-ink">{score}</span>
+        <span className="text-[9px] text-ink-3">/100</span>
       </div>
     </div>
   );

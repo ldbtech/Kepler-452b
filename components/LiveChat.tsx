@@ -81,14 +81,14 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
   return (
     <>
       {open && (
-        <div className="fixed bottom-36 right-4 z-50 flex h-[28rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-white/[.08] bg-neutral-900 shadow-2xl lg:bottom-24 lg:right-6">
-          <div className="flex items-center justify-between border-b border-white/[.06] px-4 py-3">
+        <div className="fixed bottom-36 right-4 z-50 flex h-[28rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl lg:bottom-24 lg:right-6">
+          <div className="flex items-center justify-between border-b border-line px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[.06] text-neutral-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-fill text-ink">
                 <IconSparkle className="h-4 w-4" strokeWidth={1.5} />
               </span>
               <div>
-                <div className="text-sm font-medium text-neutral-100">AI Assistant</div>
+                <div className="text-sm font-medium text-ink">AI Assistant</div>
                 <div className="flex items-center gap-1 text-[10px] text-emerald-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Live
                 </div>
@@ -96,7 +96,7 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="text-neutral-500 hover:text-neutral-200"
+              className="text-ink-3 hover:text-ink"
               aria-label="Close chat"
             >
               <IconClose className="h-4 w-4" />
@@ -109,15 +109,15 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
                 key={m.id}
                 className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                   m.from === "user"
-                    ? "ml-auto rounded-br-sm bg-blue-600 text-white"
-                    : "rounded-bl-sm bg-white/[.06] text-neutral-200"
+                    ? "ml-auto rounded-br-sm bg-accent text-white"
+                    : "rounded-bl-sm bg-fill text-ink"
                 }`}
               >
                 {m.text}
               </div>
             ))}
             {typing && (
-              <div className="w-fit rounded-2xl rounded-bl-sm bg-white/[.06] px-3 py-2 text-sm text-neutral-500">
+              <div className="w-fit rounded-2xl rounded-bl-sm bg-fill px-3 py-2 text-sm text-ink-3">
                 typing…
               </div>
             )}
@@ -128,17 +128,17 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
               e.preventDefault();
               send();
             }}
-            className="flex items-center gap-2 border-t border-white/[.06] p-2"
+            className="flex items-center gap-2 border-t border-line p-2"
           >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about a vehicle, bid, or guardrail…"
-              className="flex-1 rounded-lg border border-white/[.06] bg-white/[.03] px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-white/20 focus:outline-none"
+              className="flex-1 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm text-ink placeholder:text-ink-3 focus:border-line-strong focus:outline-none"
             />
             <button
               type="submit"
-              className="rounded-lg bg-white text-neutral-900 px-3 py-1.5 text-sm font-medium hover:bg-neutral-200"
+              className="rounded-lg bg-ink text-base px-3 py-1.5 text-sm font-medium hover:opacity-90"
             >
               Send
             </button>
@@ -148,7 +148,7 @@ export default function LiveChat({ dealer }: { dealer: Dealer }) {
 
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white text-neutral-900 shadow-lg hover:bg-neutral-200 lg:bottom-6 lg:right-6"
+        className="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-base shadow-lg hover:opacity-90 lg:bottom-6 lg:right-6"
         aria-label="Toggle AI assistant chat"
       >
         {open ? <IconClose className="h-5 w-5" /> : <IconChat className="h-5 w-5" strokeWidth={1.6} />}

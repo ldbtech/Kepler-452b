@@ -36,7 +36,7 @@ import {
 const Vehicle3DPhoto = dynamic(() => import("@/components/Vehicle3DPhoto"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full items-center justify-center text-neutral-600">
+    <div className="flex h-full w-full items-center justify-center text-ink-3">
       Loading 3D photo…
     </div>
   ),
@@ -114,13 +114,13 @@ export default function AuctionDetail({
     <div className="px-4 py-5 sm:px-6 sm:py-6">
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
         {/* Main viewer card */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-6">
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-6">
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 font-semibold text-white">
                 <span className="h-1 w-1 animate-pulse rounded-full bg-white" /> LIVE
               </span>
-              <span className="text-neutral-500">
+              <span className="text-ink-3">
                 Auction #{initialAuction.auctionId} · Lane {initialAuction.lane}
               </span>
             </div>
@@ -130,12 +130,12 @@ export default function AuctionDetail({
                 <div className="text-sm font-semibold text-red-400">
                   {formatCountdown(auction.remaining)}
                 </div>
-                <div className="text-[10px] text-neutral-600">Time Remaining</div>
+                <div className="text-[10px] text-ink-3">Time Remaining</div>
               </div>
             </div>
           </div>
 
-          <h1 className="mt-3 text-xl font-semibold tracking-tight text-neutral-100">
+          <h1 className="mt-3 text-xl font-semibold tracking-tight text-ink">
             {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.trim ?? ""}
           </h1>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -149,13 +149,13 @@ export default function AuctionDetail({
               .map((chip) => (
                 <span
                   key={chip}
-                  className="rounded-full bg-white/[.05] px-2.5 py-1 text-xs text-neutral-400"
+                  className="rounded-full bg-fill px-2.5 py-1 text-xs text-ink-2"
                 >
                   {chip}
                 </span>
               ))}
           </div>
-          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-neutral-500">
+          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ink-3">
             <IconUsers className="h-3.5 w-3.5" />
             {initialAuction.bidderCount} bidders online
           </div>
@@ -198,7 +198,7 @@ export default function AuctionDetail({
                 sizes="640px"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-sm text-neutral-600">
+              <div className="flex h-full w-full items-center justify-center text-sm text-ink-3">
                 Not captured for this lot
               </div>
             )}
@@ -221,16 +221,16 @@ export default function AuctionDetail({
                   onClick={() => setTab(t.key)}
                   className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
                     tab === t.key
-                      ? "border-neutral-100/20 bg-white/[.08] text-neutral-100"
+                      ? "border-line-strong bg-fill-strong text-ink"
                       : disabled
-                        ? "cursor-not-allowed border-white/[.04] text-neutral-700"
-                        : "border-white/[.08] text-neutral-400 hover:border-white/20 hover:text-neutral-200"
+                        ? "cursor-not-allowed border-line text-ink-3"
+                        : "border-line text-ink-2 hover:border-line-strong hover:text-ink"
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
                   {t.key}
                   {t.key === "Photos" && (
-                    <span className="text-neutral-500">({totalPhotoCount})</span>
+                    <span className="text-ink-3">({totalPhotoCount})</span>
                   )}
                 </button>
               );
@@ -239,41 +239,41 @@ export default function AuctionDetail({
         </div>
 
         {/* Current bid card */}
-        <div className="flex flex-col rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-3">
+        <div className="flex flex-col rounded-2xl border border-line bg-surface p-4 xl:col-span-3">
           {auction.ended && auction.result ? (
             <div
               className={`mb-3 rounded-xl border p-3 text-center ${
                 auction.result.isUser
                   ? "border-emerald-500/30 bg-emerald-500/[.06]"
-                  : "border-white/[.08] bg-white/[.02]"
+                  : "border-line bg-surface"
               }`}
             >
               <div
                 className={`flex items-center justify-center gap-1.5 text-sm font-semibold ${
-                  auction.result.isUser ? "text-emerald-400" : "text-neutral-300"
+                  auction.result.isUser ? "text-emerald-400" : "text-ink-2"
                 }`}
               >
                 {auction.result.isUser && <IconTrophy className="h-4 w-4" strokeWidth={1.5} />}
                 {auction.result.isUser ? "You Won" : "Auction Ended"}
               </div>
-              <div className="mt-1 text-xl font-bold text-neutral-100">
+              <div className="mt-1 text-xl font-bold text-ink">
                 {formatUsd(auction.result.amount)}
               </div>
-              <div className="text-xs text-neutral-500">
+              <div className="text-xs text-ink-3">
                 {auction.result.isUser ? "Winning bid" : `Won by ${auction.result.winnerName}`}
               </div>
             </div>
           ) : (
             <>
-              <div className="text-xs text-neutral-500">Current Bid</div>
+              <div className="text-xs text-ink-3">Current Bid</div>
               <div
                 className={`text-3xl font-semibold tracking-tight ${
-                  auction.leader.isUser ? "text-blue-400" : "text-neutral-100"
+                  auction.leader.isUser ? "text-accent" : "text-ink"
                 }`}
               >
                 {formatUsd(auction.currentBid)}
               </div>
-              <div className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
+              <div className="mt-1 flex items-center gap-2 text-xs text-ink-3">
                 <span>{initialAuction.bidderCount} bidders</span>
                 <span>·</span>
                 <span>{auction.activity.length} bids</span>
@@ -281,7 +281,7 @@ export default function AuctionDetail({
                 <span className="text-red-400">{formatCountdown(auction.remaining)}</span>
               </div>
               {auction.leader.isUser && (
-                <div className="mt-1 flex items-center gap-1 text-[11px] text-blue-400">
+                <div className="mt-1 flex items-center gap-1 text-[11px] text-accent">
                   <IconCheck className="h-3 w-3" strokeWidth={2} /> You&apos;re the high bidder
                 </div>
               )}
@@ -292,18 +292,18 @@ export default function AuctionDetail({
             <button
               onClick={() => setCustomBid((v) => Math.max(auction.nextBid, v - bidStep))}
               disabled={auction.ended}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[.08] text-lg text-neutral-300 hover:bg-white/5 disabled:opacity-40"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-lg text-ink-2 hover:bg-fill disabled:opacity-40"
               aria-label="Decrease bid"
             >
               −
             </button>
-            <div className="flex-1 rounded-lg border border-white/[.08] bg-white/[.03] px-3 py-2 text-center text-sm font-semibold text-neutral-100">
+            <div className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-center text-sm font-semibold text-ink">
               {formatUsd(customBid)}
             </div>
             <button
               onClick={() => setCustomBid((v) => v + bidStep)}
               disabled={auction.ended}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[.08] text-lg text-neutral-300 hover:bg-white/5 disabled:opacity-40"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-lg text-ink-2 hover:bg-fill disabled:opacity-40"
               aria-label="Increase bid"
             >
               +
@@ -313,7 +313,7 @@ export default function AuctionDetail({
           <button
             onClick={() => auction.placeBid(customBid)}
             disabled={auction.ended}
-            className="mt-3 w-full rounded-lg bg-neutral-100 py-2.5 text-sm font-semibold text-neutral-900 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-3 w-full rounded-lg bg-ink py-2.5 text-sm font-semibold text-base transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {auction.ended ? "Auction Ended" : "Place Bid"}
           </button>
@@ -329,7 +329,7 @@ export default function AuctionDetail({
               className={`rounded-lg border py-2 text-xs font-medium transition-colors disabled:opacity-40 ${
                 auction.autoBid
                   ? "border-emerald-500/30 bg-emerald-500/[.08] text-emerald-400"
-                  : "border-white/[.08] text-neutral-400 hover:bg-white/5"
+                  : "border-line text-ink-2 hover:bg-fill"
               }`}
             >
               {auction.autoBid && <IconCheck className="mr-1 inline h-3 w-3" strokeWidth={2} />}
@@ -338,7 +338,7 @@ export default function AuctionDetail({
             <button
               onClick={() => setShowMaxInput((v) => !v)}
               disabled={auction.ended}
-              className="rounded-lg border border-white/[.08] py-2 text-xs font-medium text-neutral-400 hover:bg-white/5 disabled:opacity-40"
+              className="rounded-lg border border-line py-2 text-xs font-medium text-ink-2 hover:bg-fill disabled:opacity-40"
             >
               Set Max
             </button>
@@ -356,24 +356,24 @@ export default function AuctionDetail({
                   setShowMaxInput(false);
                 }}
                 autoFocus
-                className="w-full rounded-lg border border-white/[.08] bg-white/[.03] px-2 py-1.5 text-xs text-neutral-200 focus:border-white/20 focus:outline-none"
+                className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-line-strong focus:outline-none"
               />
             </div>
           )}
 
-          <div className="mt-3 flex items-center justify-between text-[11px] text-neutral-600">
+          <div className="mt-3 flex items-center justify-between text-[11px] text-ink-3">
             <span>Minimum next bid: {formatUsd(auction.nextBid)}</span>
           </div>
-          <div className="mt-0.5 text-[11px] text-neutral-600">
+          <div className="mt-0.5 text-[11px] text-ink-3">
             Auto-bid max: {formatUsd(auction.maxAutoBid)}
           </div>
         </div>
 
         {/* Live Activity */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-3">
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-3">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-medium text-neutral-200">Live Activity</span>
-            <span className="flex items-center gap-0.5 text-[11px] text-neutral-600">
+            <span className="text-sm font-medium text-ink">Live Activity</span>
+            <span className="flex items-center gap-0.5 text-[11px] text-ink-3">
               All Bidders <IconChevronDown className="h-3 w-3" />
             </span>
           </div>
@@ -388,23 +388,23 @@ export default function AuctionDetail({
                 </span>
                 <div className="min-w-0 flex-1">
                   <div
-                    className={`truncate ${a.isUser ? "font-medium text-blue-400" : "text-neutral-300"}`}
+                    className={`truncate ${a.isUser ? "font-medium text-accent" : "text-ink-2"}`}
                   >
                     {a.isUser ? "You" : a.bidder}
                   </div>
-                  <div className="text-[10px] text-neutral-600">
+                  <div className="text-[10px] text-ink-3">
                     {formatAgo(Math.max(0, Math.floor((auction.now - a.timestamp) / 1000)))}
                   </div>
                 </div>
-                <span className="font-semibold text-neutral-100">{formatUsd(a.amount)}</span>
+                <span className="font-semibold text-ink">{formatUsd(a.amount)}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Vehicle Details */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-4">
-          <div className="mb-3 text-sm font-medium text-neutral-200">Vehicle Details</div>
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">
+          <div className="mb-3 text-sm font-medium text-ink">Vehicle Details</div>
           <Row label="Year" value={String(vehicle.year)} />
           <Row label="Make" value={vehicle.make} />
           <Row label="Model" value={vehicle.model} />
@@ -418,22 +418,22 @@ export default function AuctionDetail({
         </div>
 
         {/* Condition & AI Analysis */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-4">
-          <div className="mb-3 text-sm font-medium text-neutral-200">
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">
+          <div className="mb-3 text-sm font-medium text-ink">
             Condition &amp; AI Analysis
           </div>
           <div className="flex items-center gap-3">
             <ConditionGauge score={rec.conditionScore} />
             <div className="flex-1">
-              <div className="text-xs text-neutral-500">Overall Condition</div>
-              <div className="mt-2 text-xs text-neutral-500">Estimated Repair Cost</div>
+              <div className="text-xs text-ink-3">Overall Condition</div>
+              <div className="mt-2 text-xs text-ink-3">Estimated Repair Cost</div>
               <div className="text-sm font-semibold text-amber-400">
                 {formatUsd(rec.repairCostLow)} – {formatUsd(rec.repairCostHigh)}
               </div>
             </div>
           </div>
-          <div className="mt-3 rounded-lg bg-white/[.03] p-2.5">
-            <div className="text-xs text-neutral-500">Estimated Wholesale Value</div>
+          <div className="mt-3 rounded-lg bg-surface p-2.5">
+            <div className="text-xs text-ink-3">Estimated Wholesale Value</div>
             <div className="text-sm font-semibold text-emerald-400">
               {formatUsd(rec.wholesaleValueLow)} – {formatUsd(rec.wholesaleValueHigh)}
             </div>
@@ -458,12 +458,12 @@ export default function AuctionDetail({
                         sizes="100px"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-[9px] text-neutral-700">
+                      <div className="flex h-full w-full items-center justify-center text-[9px] text-ink-3">
                         N/A
                       </div>
                     )}
                   </div>
-                  <div className="px-1 py-1 text-center text-[9px] text-neutral-500">{label}</div>
+                  <div className="px-1 py-1 text-center text-[9px] text-ink-3">{label}</div>
                 </div>
               );
             })}
@@ -471,15 +471,15 @@ export default function AuctionDetail({
         </div>
 
         {/* Market Insights */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-4">
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-medium text-neutral-200">Market Insights</span>
+            <span className="text-sm font-medium text-ink">Market Insights</span>
           </div>
           <div className="mb-2 flex items-baseline gap-2">
-            <span className="text-lg font-semibold text-neutral-100">
+            <span className="text-lg font-semibold text-ink">
               {formatUsd(rec.estimatedMarketValue)}
             </span>
-            <span className="text-[11px] text-neutral-500">
+            <span className="text-[11px] text-ink-3">
               vs {formatUsd(insights.points[0].similar)} similar
             </span>
           </div>
@@ -487,15 +487,15 @@ export default function AuctionDetail({
         </div>
 
         {/* Bidding Agents */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-8">
-          <div className="mb-3 text-sm font-medium text-neutral-200">
-            Bidding Agents <span className="text-neutral-600">(Simulated Dealerships)</span>
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-8">
+          <div className="mb-3 text-sm font-medium text-ink">
+            Bidding Agents <span className="text-ink-3">(Simulated Dealerships)</span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {agents.map((agent) => (
               <div
                 key={agent.key}
-                className="rounded-xl border border-white/[.08] bg-white/[.015] p-3"
+                className="rounded-xl border border-line bg-surface p-3"
               >
                 <div className="flex items-center gap-2">
                   <span
@@ -505,29 +505,29 @@ export default function AuctionDetail({
                     {agent.key}
                   </span>
                   <div className="min-w-0">
-                    <div className="truncate text-xs font-medium text-neutral-200">
+                    <div className="truncate text-xs font-medium text-ink">
                       {agent.label}
                     </div>
-                    <div className="truncate text-[10px] text-neutral-500">
+                    <div className="truncate text-[10px] text-ink-3">
                       {agent.strategyLabel}
                     </div>
                   </div>
                 </div>
-                <p className="mt-2 text-[11px] leading-relaxed text-neutral-500">
+                <p className="mt-2 text-[11px] leading-relaxed text-ink-3">
                   {agent.description}
                 </p>
-                <div className="mt-2 text-xs text-neutral-500">Max Bid</div>
-                <div className="text-sm font-semibold text-neutral-100">
+                <div className="mt-2 text-xs text-ink-3">Max Bid</div>
+                <div className="text-sm font-semibold text-ink">
                   {formatUsd(agent.maxBid)}
                 </div>
                 <div className="mt-2">
-                  <div className="h-1 overflow-hidden rounded-full bg-white/[.06]">
+                  <div className="h-1 overflow-hidden rounded-full bg-fill">
                     <div
-                      className="h-full rounded-full bg-neutral-300"
+                      className="h-full rounded-full bg-ink-3"
                       style={{ width: `${agent.aggressiveness}%` }}
                     />
                   </div>
-                  <div className="mt-0.5 text-[10px] text-neutral-600">
+                  <div className="mt-0.5 text-[10px] text-ink-3">
                     Aggressiveness {agent.aggressiveness}%
                   </div>
                 </div>
@@ -537,16 +537,16 @@ export default function AuctionDetail({
         </div>
 
         {/* Your AI Assistant */}
-        <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 xl:col-span-4">
-          <div className="mb-3 flex items-center gap-1.5 text-sm font-medium text-neutral-200">
+        <div className="rounded-2xl border border-line bg-surface p-4 xl:col-span-4">
+          <div className="mb-3 flex items-center gap-1.5 text-sm font-medium text-ink">
             <IconSparkle className="h-4 w-4" strokeWidth={1.5} />
             Your AI Assistant
           </div>
           <div className="flex items-center justify-between py-1 text-sm">
-            <span className="text-neutral-500">Recommended Max Bid</span>
-            <span className="font-medium text-neutral-200">
+            <span className="text-ink-3">Recommended Max Bid</span>
+            <span className="font-medium text-ink">
               {formatUsd(rec.recommendedMaxBid)}{" "}
-              <span className="text-[10px] text-neutral-500">Edit</span>
+              <span className="text-[10px] text-ink-3">Edit</span>
             </span>
           </div>
           <Row
@@ -556,7 +556,7 @@ export default function AuctionDetail({
           />
           <Row label="Win Probability" value={`${rec.winProbability}%`} />
           <Row label="Risk Level" value={rec.riskLevel} valueClass={RISK_STYLE[rec.riskLevel]} />
-          <p className="mt-3 rounded-lg bg-white/[.03] p-2.5 text-xs leading-relaxed text-neutral-400">
+          <p className="mt-3 rounded-lg bg-surface p-2.5 text-xs leading-relaxed text-ink-2">
             {rec.reasoning}
           </p>
         </div>
@@ -576,8 +576,8 @@ function Row({
 }) {
   return (
     <div className="flex items-center justify-between py-1 text-sm">
-      <span className="text-neutral-500">{label}</span>
-      <span className={`font-medium text-neutral-200 ${valueClass ?? ""}`}>{value}</span>
+      <span className="text-ink-3">{label}</span>
+      <span className={`font-medium text-ink ${valueClass ?? ""}`}>{value}</span>
     </div>
   );
 }

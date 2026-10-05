@@ -23,7 +23,7 @@ export default function LiveCountdown({
   }, [remaining <= 0]);
 
   if (remaining <= 0) {
-    return <span className="text-neutral-600">Ended</span>;
+    return <span className="text-ink-3">Ended</span>;
   }
   return <span>{formatCountdown(remaining)}</span>;
 }
