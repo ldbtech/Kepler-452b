@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "keplerv — the autonomous car marketplace",
+  title: "KeplerV — an intent-native browser",
   description:
-    "AI agents that inspect, price, and bid on vehicles for you — within guardrails you set.",
+    "KeplerV explores a browser organized around human intent, persistent goals, autonomous agents, and visible human control.",
 };
 
 // Sets the theme before React hydrates, so there's no flash of the wrong
@@ -37,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
