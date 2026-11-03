@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KeplerV — an intent-native browser",
+  title: "KeplerV — a browser for what you want to do",
   description:
-    "KeplerV explores a browser organized around human intent, persistent goals, autonomous agents, and visible human control.",
+    "Meet KeplerV: an open-source browser built around your goals, visible AI agents, contextual services, and human control.",
 };
 
 // Sets the theme before React hydrates, so there's no flash of the wrong
