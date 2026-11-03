@@ -20,7 +20,7 @@ export default function LandingPage() {
       <section className="ks-hero">
         <div className="ks-hero-copy">
           <div className="ks-kicker"><span /> INTRODUCING KEPLERV</div>
-          <h1>A browser for<br />what you <em>want to do.</em></h1>
+          <h1>A browser for<br />what you<br /><em>want to do.</em></h1>
           <p>Most browsers take you from page to page. KeplerV starts with your intention—and brings goals, research, and the work of AI agents into one space you can understand and direct.</p>
           <div className="ks-hero-links"><a className="ks-button" href="https://github.com/ldbtech/KeplerV-Browser" target="_blank" rel="noreferrer">Explore the project <span>↗</span></a><a href="#experience" className="ks-text-link">See KeplerV in action <span>↓</span></a></div>
           <div className="ks-proof"><span>BUILT FOR macOS</span><i /> <span>TAURI · SVELTE · PYTHON</span><i /> <span>OPEN SOURCE</span></div>
